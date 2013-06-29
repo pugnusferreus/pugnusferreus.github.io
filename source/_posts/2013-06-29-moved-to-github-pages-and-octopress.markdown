@@ -30,3 +30,4 @@ If you don't have a Github account, do it!
 12. `rake deploy`
 13. Wait for a couple of minutes and your blog will be up on yourdomain.github.io
 14. To change your theme, go to the [Octopress Themes](https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes) page and follow the instructions.
+15. Once you're done for the day, don't forget to commit and push your changes with `git push origin source`
