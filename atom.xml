@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2013-06-29T17:17:41+10:00</updated>
+  <updated>2013-06-29T17:44:49+10:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,45 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Moved to Github Pages and Octopress]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress/"/>
+    <updated>2013-06-29T17:26:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress</id>
+    <content type="html"><![CDATA[<h2>
+  Moved to Github Pages and Octopress
+</h2>
+
+
+
+
+<h3>29 June 2013</h3>
+
+
+<p>So, I was bored again with my current blogging framework and decided to move to Github Pages. I&rsquo;ve made a couple of research and Octopress is apparently the way to go and is based on Jekyll. So how does one setup a Github Pages site with Octopress?</p>
+
+<p>If you don&rsquo;t have a Github account, do it!</p>
+
+<ol>
+<li>Create a repository with $YOUR_USERNAME_OR_ORGANIZATION.github.io</li>
+<li>Install git, ruby, bundle and rake.</li>
+<li>Make sure that your ruby version is 1.9.3. I&rsquo;m currently using RVM to do that.</li>
+<li><code>git clone git://github.com/imathis/octopress.git octopress</code></li>
+<li><code>cd octopress</code></li>
+<li><code>bundle install</code></li>
+<li><code>rake install</code></li>
+<li><code>rake setup_github_pages</code> and enter your repository details</li>
+<li>Make sure that origin points to your local repository. You can double check with <code>git remote -v</code></li>
+<li>Modify your _config.yml file</li>
+<li><code>rake generate</code></li>
+<li><code>rake deploy</code></li>
+<li>Wait for a couple of minutes and your blog will be up on yourdomain.github.io</li>
+<li>To change your theme, go to the <a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">Octopress Themes</a> page and follow the instructions.</li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[BatchJHaml Update]]></title>
