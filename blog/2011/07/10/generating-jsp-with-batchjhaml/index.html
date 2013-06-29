@@ -1,0 +1,273 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Generating JSPs With BatchJHaml - Benson's Programming Journey</title>
+  <meta name="author" content="Benson Lim">
+
+  
+  <meta name="description" content="Generating JSPs With BatchJHaml 10 July 2011 Last year, I was assigned to build a web app using Struts.
+I wanted a Haml interpreter and found JHaml &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">Benson's Programming Journey</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Generating JSPs With BatchJHaml</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-10T00:00:00+10:00" pubdate data-updated="true">Jul 10<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>
+  Generating JSPs With BatchJHaml
+</h2>
+
+
+
+
+<h3>10 July 2011</h3>
+
+
+<p>Last year, I was assigned to build a web app using <a href="http://struts.apache.org/">Struts</a>.
+I wanted a Haml interpreter and found <a href="https://github.com/raymyers/JHaml">JHaml</a>.
+The problem is it only converts Haml strings to HTML. I need something to convert .haml files to .html or .jsp files.
+Why should you use Haml? See <a href="http://haml-lang.com/">here</a>.</p>
+
+<p>Due to this limitation, I created <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a>.
+If you&rsquo;re using BatchJHaml as a standalone app, it&rsquo;s pretty straight forward.
+But what if you want to include BatchJHaml into your Ant build script?
+Here&rsquo;s what you need to do.</p>
+
+<p>1.) Run <code>git clone git@github.com:pugnusferreus/batchjhaml.git</code> in your terminal</p>
+
+<p>2.) cd to BatchJHaml</p>
+
+<p>3.) Run <code>ant</code> and <code>BatchJHaml.jar</code> will appear in the <code>dist</code> directory.</p>
+
+<p>4.) Copy and paste <code>BatchJHaml.jar</code> in your local lib directory.</p>
+
+<p>5.) Copy the following into your local lib directory as well. You can find them in the <code>BatchJHaml/lib</code> folder.
+If you already have the following, you can ommit this step.
+If you have a later version of the following jars, you can use them as well.</p>
+
+<ul>
+<li><p>commons-io-1.4.jar</p></li>
+<li><p>commons-lang-2.5.jar</p></li>
+<li><p>guava-r06.jar</p></li>
+<li><p>jhaml-0.1.2.jar</p></li>
+<li><p>markdownj-1.0.2b4-0.3.0.jar</p></li>
+</ul>
+
+
+<p>6.) Copy the following build target into your build.xml</p>
+
+<div>
+  <pre><code class='xml'>&lt;target name=&quot;compile-haml&quot;&gt;
+  &lt;echo message=&quot;Converting haml files into jsp ...&quot; /&gt;
+  &lt;java fork=&quot;true&quot; classname=&quot;com.progriff.jhaml.BatchJHaml&quot;&gt;
+    &lt;classpath&gt;
+      &lt;fileset dir=&quot;${library.home}&quot;&gt;
+        &lt;include name=&quot;**/commons-io-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/commons-lang-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/guava-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/jhaml-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/markdownj-*.jar&quot; /&gt;
+      &lt;/fileset&gt;
+      &lt;path location=&quot;${library.home}/BatchJHaml.jar&quot;/&gt;
+    &lt;/classpath&gt;
+    &lt;arg value=&quot;~/YourProject/haml&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/haml/layouts&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/jsp&quot;/&gt;
+    &lt;arg value=&quot;jsp&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/javascripts&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/stylesheets&quot;/&gt;
+  &lt;/java&gt;
+&lt;/target&gt;</code></pre>
+</div>
+
+
+<p>7.) In your <code>build</code> target, add <code>compile-haml</code> to your <code>depends</code>. Example:</p>
+
+<div>
+  <pre><code class='xml'>&lt;target name=&quot;build&quot; depends=&quot;clean, prepare,compile, compile-haml&quot;&gt;</code></pre>
+</div>
+
+
+<p>And enjoy your Haml.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Benson Lim</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-07-10T00:00:00+10:00" pubdate data-updated="true">Jul 10<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/07/09/modernizing-lunchpicker-pt2/" title="Previous Post: Modernizing Lunchpicker Part 2">&laquo; Modernizing Lunchpicker Part 2</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/10/22/normalize-your-video-with-ffmpeg/" title="Next Post: Normalize your video with FFmpeg">Normalize your video with FFmpeg &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/02/14/batchjhaml-update/">BatchJHaml Update</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/08/resin-azure-sdk-for-java/">Resin 3.1 and Azure SDK for Java</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/06/hibernate-wont-update/">Hibernate Won't Update My Object!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/22/normalize-your-video-with-ffmpeg/">Normalize Your Video With FFmpeg</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/07/10/generating-jsp-with-batchjhaml/">Generating JSPs With BatchJHaml</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Benson Lim -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

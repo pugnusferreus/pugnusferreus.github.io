@@ -1,0 +1,253 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>BatchJHaml Update - Benson's Programming Journey</title>
+  <meta name="author" content="Benson Lim">
+
+  
+  <meta name="description" content="BatchJHaml Update 14 February 2012 I&rsquo;ve updated BatchJHaml to support sub directories.
+If you set the last argument to true, it&rsquo;ll &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">Benson's Programming Journey</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">BatchJHaml Update</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-14T00:00:00+11:00" pubdate data-updated="true">Feb 14<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>
+  BatchJHaml Update
+</h2>
+
+
+
+
+<h3>14 February 2012</h3>
+
+
+<p>I&rsquo;ve updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.
+If you set the last argument to true, it&rsquo;ll generate the Haml file in subdirectories as well.
+Do note that the layout folder will be omitted.</p>
+
+<p>Here is a sample from my build.xml</p>
+
+<div>
+  <pre><code class='xml'>&lt;target name=&quot;run&quot;&gt;
+  &lt;java fork=&quot;true&quot; 
+    classname=&quot;com.progriff.jhaml.BatchJHaml&quot; 
+    outputproperty=&quot;javaoutput&quot;&gt;
+    &lt;classpath&gt;
+      &lt;path refid=&quot;classpath&quot;/&gt;
+      &lt;path location=&quot;${dist}/BatchJHaml.jar&quot;/&gt;
+    &lt;/classpath&gt;
+    &lt;arg value=&quot;${haml.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.layout.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.output.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.output.extension}&quot;/&gt;
+    &lt;arg value=&quot;${haml.javascript.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.stylesheet.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.recursive}&quot; /&gt;
+    &lt;/java&gt;&lt;echo message=&quot;${javaoutput}&quot; /&gt;
+&lt;/target&gt;</code></pre>
+</div>
+
+
+<p>For example if you have the following in your haml folder,</p>
+
+<pre class="text">
+haml
+  |-- someDir
+        `- baz.haml
+  `foo.haml
+  `- bar.haml
+</pre>
+
+
+<p>The resulting jsp folder will look like this</p>
+
+<pre class="text">
+jsp
+  |-- someDir
+        `- baz.jsp
+  `foo.jsp
+  `- bar.jsp
+</pre>
+
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Benson Lim</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-14T00:00:00+11:00" pubdate data-updated="true">Feb 14<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/02/08/resin-azure-sdk-for-java/" title="Previous Post: Resin 3.1 and Azure SDK for Java">&laquo; Resin 3.1 and Azure SDK for Java</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/02/14/batchjhaml-update/">BatchJHaml Update</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/08/resin-azure-sdk-for-java/">Resin 3.1 and Azure SDK for Java</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/06/hibernate-wont-update/">Hibernate Won't Update My Object!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/22/normalize-your-video-with-ffmpeg/">Normalize Your Video With FFmpeg</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/07/10/generating-jsp-with-batchjhaml/">Generating JSPs With BatchJHaml</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Benson Lim -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

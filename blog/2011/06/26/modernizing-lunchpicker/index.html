@@ -1,0 +1,325 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Modernizing Lunchpicker - Benson's Programming Journey</title>
+  <meta name="author" content="Benson Lim">
+
+  
+  <meta name="description" content="Modernizing Lunchpicker 26 June 2011 Lunchpicker is my first project with Rails. Back then, there was alot of hype regarding Rails and that was why &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><a href="/">Benson's Programming Journey</a></span>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/">projects</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Modernizing Lunchpicker</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-26T00:00:00+10:00" pubdate data-updated="true">Jun 26<span>th</span>, 2011</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><h2>
+  Modernizing Lunchpicker
+</h2>
+
+
+
+
+<h3>26 June 2011</h3>
+
+
+<p>Lunchpicker is my first project with Rails. Back then, there was alot of hype regarding Rails and that was why I started Lunchpicker
+to have a taste of Ruby On Rails. Yes, I fell in love with it immediately.</p>
+
+<p>Wife had some plans for the entire afternoon and I&rsquo;ve decided to dedicate my entire Saturday afternoon on migrating Lunchpicker from Rails 2 to Rails 3.
+Here&rsquo;s a blog post on my adventure. Thanks <a href="http://twitter.com/#!/jasoncodes">@jasoncodes</a> for helping!</p>
+
+<p>1 . Install <a href="https://rvm.beginrescueend.com/">RVM</a>.
+RVM allows you to install, manage and work with multiple ruby environments.
+For example, you can have project A running in Ruby 1.8.x and project B running in Ruby 1.9.x</p>
+
+<p>2 . For lunchpicker, here is my .rvmrc file</p>
+
+<pre><code>&lt;div&gt;
+</code></pre>
+
+<p>  <pre><code class='bash'>$ cat .rvmrc</p>
+
+<pre><code>rvm --create 1.9.2@lunchpicker&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+
+<p></div></p>
+
+<p>3 . Now, we need to intall Bundler.
+Bundler manages your application&rsquo;s dependencies via Gemfile.
+Here&rsquo;s a sample of lunchpicker&rsquo;s Gemfile</p>
+
+<div>
+  <pre><code class='ruby'>source 'http://rubygems.org'
+
+gem 'rails', '3.0.9'
+gem 'google_weather', :git =&gt; 'http://github.com/Ennova/google-weather.git'
+gem 'informal'
+gem 'haml'
+gem 'httparty'
+gem 'authlogic', :git =&gt; 'http://github.com/radar/authlogic.git'
+gem 'pg', :require =&gt; 'pg'
+gem 'sass'
+gem 'dynamic_form'</code></pre>
+</div>
+
+
+<p>4 . After creating a Gemfile, run <code>gem install bundler</code> and then run <code>bundle intall</code> to install all the dependencies in your rvm.</p>
+
+<p>5 . Go into the lunchpicker directory and run <code>rails new .</code>.
+It&rsquo;ll obviously overwrite your old configurations with Rails 3&rsquo;s. Replace all the files.</p>
+
+<p>6 . Do a diff and merge all your codes (controllers, models, js, css, haml etc.)</p>
+
+<p>7 . Remove config/initializers/new_rails_defaults.rb</p>
+
+<p>8 . Remove scaffold related html from the <code>public</code> folder</p>
+
+<p>9 . In your helpers, mark your HTML fragements as safe. For example you should change</p>
+
+<div>
+  <pre><code class='ruby'>return &lt;&lt;-HTML
+  &lt;p&gt;
+    blah
+  &lt;/p&gt;
+HTML</code></pre>
+</div>
+
+
+<p>to</p>
+
+<div>
+  <pre><code class='ruby'>return &lt;&lt;-HTML.html_safe
+  &lt;p&gt;
+    blah
+  &lt;/p&gt;
+HTML</code></pre>
+</div>
+
+
+<p>10 . If you have a non ActiveRecord model, and if you&rsquo;re using Validatable, change it to <a href="https://github.com/joshsusser/informal">Informal<a/>.
+For Lunchpicker, search.rb is not an ActiveRecord model.
+Also, we need to change</p>
+
+<div>
+  <pre><code class='ruby'>validates_presence_of :sheltered</code></pre>
+</div>
+
+
+<p>to</p>
+
+<div>
+  <pre><code class='ruby'>validates_inclusion_of :sheltered, :in =&gt; [true, false]</code></pre>
+</div>
+
+
+<p>We&rsquo;re using validate inclusion rather than presence for booleans. This is due to the way Object#blank? handles boolean values. false.blank? # => true</p>
+
+<p>11 . Add the following lines to config/application.rb. This will prefix the tablename infront of the PK. eg. venue_id</p>
+
+<div>
+  <pre><code class='ruby'>config.active_record.primary_key_prefix_type = :table_name_with_underscore
+config.active_record.schema_format = :sql</code></pre>
+</div>
+
+
+<p>12 . default.html.haml has been changed to application.html.haml in Rails 3.
+Run <code>git mv default.html.haml application.html.haml</code> and don&rsquo;t forget to remove the application.html.erb as well.</p>
+
+<p>13 . Switch rails.js from Prototype to jQuery. Remove controls.js, dragdrop.js, effect.js and prototype.js. Please see
+<a href="https://github.com/pugnusferreus/lunchpicker/blob/0e278acf24d1764d03c8ededa02e364da7c1c409/public/javascripts/rails.js">rails.js</a>.</p>
+
+<p>14 . Add rails.js in the application.html.haml for Unobtrusive Javascript support.</p>
+
+<div>
+  <pre><code class='ruby'>= javascript_include_tag 'rails'</code></pre>
+</div>
+
+
+<p>15 . If you run <code>rake db:migrate</code> before step 11, run <code>rake db:reset</code> and then <code>rake db:migrate</code> again.</p>
+
+<p>I hope that this will be useful to you if you need to migrate any old Rails 2 application to Rails 3.
+I&rsquo;ll use this opportunity to add unit test with RSpec.</p>
+
+<p>The Rails 3 version of lunch picker won&rsquo;t be in production till unit test is done!</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Benson Lim</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2011-06-26T00:00:00+10:00" pubdate data-updated="true">Jun 26<span>th</span>, 2011</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2011/06/18/mocking-with-mockito/" title="Previous Post: Mocking with Mockito">&laquo; Mocking with Mockito</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2011/07/09/modernizing-lunchpicker-pt2/" title="Next Post: Modernizing Lunchpicker Part 2">Modernizing Lunchpicker Part 2 &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2012/02/14/batchjhaml-update/">BatchJHaml Update</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/08/resin-azure-sdk-for-java/">Resin 3.1 and Azure SDK for Java</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/01/06/hibernate-wont-update/">Hibernate Won't Update My Object!</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/10/22/normalize-your-video-with-ffmpeg/">Normalize Your Video With FFmpeg</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2011/07/10/generating-jsp-with-batchjhaml/">Generating JSPs With BatchJHaml</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  <footer role="contentinfo"><p>
+  Copyright &copy; 2013 - Benson Lim -
+  <span class="credit">Powered by <a href="http://octopress.org">Octopress</a></span>
+</p>
+
+</footer>
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
