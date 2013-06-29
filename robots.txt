@@ -1,0 +1,4 @@
+User-agent: *
+Disallow: 
+
+Sitemap: http://pugnusferreus.github.io/sitemap.xml 
