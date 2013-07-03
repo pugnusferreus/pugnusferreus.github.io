@@ -96,45 +96,35 @@ Mockito provides a clean and simple API to mock your Java objects.</p>
 <p>Let&rsquo;s say Class1 has a couple of arguments for it&rsquo;s constructor and you do not want to provide each arguments,
 you can simply do:</p>
 
-<div>
-  <pre><code class='java'>import static org.mockito.Mockito.mock;</code></pre>
-</div>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import static org.mockito.Mockito.mock;</span></code></pre></td></tr></table></div></figure>
 
 
 <p>then, you do</p>
 
-<div>
-  <pre><code class='java'>Class1 class1 = mock(Class1.class);</code></pre>
-</div>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Class1 class1 = mock(Class1.class);</span></code></pre></td></tr></table></div></figure>
 
 
 <p>If you want to mock a certain method call in class1, do the following:</p>
 
-<div>
-  <pre><code class='java'>import static org.mockito.Mockito.when;
-import static org.junit.Assert.assertEquals;</code></pre>
-</div>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import static org.mockito.Mockito.when;
+</span><span class='line'>import static org.junit.Assert.assertEquals;</span></code></pre></td></tr></table></div></figure>
 
 
 <p>then, you do</p>
 
-<div>
-  <pre><code class='java'>when(class1.methodReturnsString()).thenReturn(&quot;foo&quot;);
-assertEquals(&quot;foo&quot;, class2.callClass1Method());</code></pre>
-</div>
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>when(class1.methodReturnsString()).thenReturn("foo");
+</span><span class='line'>assertEquals("foo", class2.callClass1Method());</span></code></pre></td></tr></table></div></figure>
 
 
-<p>Assuming that <div>
-  <pre><code class='java'>class2.callClass1Method()</code></pre>
-</div>
- will call</p>
-
-<div>
-  <pre><code class='java'>class1.methodReturnsString()</code></pre>
-</div>
-
-
-<p>the assertion will be successful.</p>
+<p>Assuming that <code>class2.callClass1Method()</code> will call
+<code>class1.methodReturnsString()</code>
+the assertion will be successful.</p>
 
 <p>To get a better picture of what Mockito can do for you, you can checkout my Mockito Test project
 from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Project</a>.</p>
@@ -209,6 +199,10 @@ from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Pr
   <ul id="recent_posts">
     
       <li class="post">
+        <a href="/blog/2013/07/03/create-a-hls4-with-aes-stream/">Create a HLS4 With AES Stream</a>
+      </li>
+    
+      <li class="post">
         <a href="/blog/2013/06/29/moved-to-github-pages-and-octopress/">Moved to Github Pages and Octopress</a>
       </li>
     
@@ -222,10 +216,6 @@ from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Pr
     
       <li class="post">
         <a href="/blog/2012/01/06/hibernate-wont-update/">Hibernate Won't Update My Object!</a>
-      </li>
-    
-      <li class="post">
-        <a href="/blog/2011/10/22/normalize-your-video-with-ffmpeg/">Normalize Your Video With FFmpeg</a>
       </li>
     
   </ul>
