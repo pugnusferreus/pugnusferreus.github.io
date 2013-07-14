@@ -3,10 +3,6 @@ layout: post
 title: BatchJHaml Update
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>14 February 2012</h3>
 
 I've updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.

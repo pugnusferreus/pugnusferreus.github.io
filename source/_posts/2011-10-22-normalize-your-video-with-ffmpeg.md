@@ -3,10 +3,6 @@ layout: post
 title: Normalize your video with FFmpeg
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>22 October 2011</h3>
 
 It's been a while since I've updated my blog. I didn't encounter any weird things until last week.

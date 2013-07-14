@@ -6,10 +6,6 @@ comments: true
 categories: 
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>29 June 2013</h3>
 
 So, I was bored again with my current blogging framework and decided to move to Github Pages. I've made a couple of research and Octopress is apparently the way to go and is based on Jekyll. So how does one setup a Github Pages site with Octopress? 

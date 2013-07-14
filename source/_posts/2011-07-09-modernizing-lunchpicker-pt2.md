@@ -3,10 +3,6 @@ layout: post
 title: Modernizing Lunchpicker Part 2
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>9 July 2011</h3>
 
 When I wrote lunchpicker, I was obviously not yet enlightened with <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>.

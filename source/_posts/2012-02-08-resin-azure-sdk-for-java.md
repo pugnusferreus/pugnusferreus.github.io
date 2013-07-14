@@ -3,10 +3,6 @@ layout: post
 title: Resin 3.1 and Azure SDK for Java
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>08 February 2012</h3>
 
 I was writing a REST service that will send a Cloud Queue Message to Azure. 

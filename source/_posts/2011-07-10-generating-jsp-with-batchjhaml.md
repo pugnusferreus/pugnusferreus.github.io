@@ -3,10 +3,6 @@ layout: post
 title: Generating JSPs With BatchJHaml
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>10 July 2011</h3>
 
 Last year, I was assigned to build a web app using <a href="http://struts.apache.org/">Struts</a>.

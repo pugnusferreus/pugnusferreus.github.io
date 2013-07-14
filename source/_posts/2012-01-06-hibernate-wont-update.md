@@ -3,10 +3,6 @@ layout: post
 title: Hibernate won't update my object!
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>06 January 2012</h3>
 
 Yesterday, I was given a Hibernate related bug to fix. 

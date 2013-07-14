@@ -3,10 +3,6 @@ layout: post
 title: Things to do before you start programming
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>23 May 2011</h3>
 
 I've been reading <a href="http://pragprog.com/titles/ahptl/pragmatic-thinking-and-learning">Pragmatic Thinking & Learning</a> by Andy Hunt. 

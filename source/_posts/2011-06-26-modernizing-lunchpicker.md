@@ -3,10 +3,6 @@ layout: post
 title: Modernizing Lunchpicker
 ---
 
-<h2>
-  {{ page.title }}
-</h2>
-
 <h3>26 June 2011</h3>
 
 Lunchpicker is my first project with Rails. Back then, there was alot of hype regarding Rails and that was why I started Lunchpicker
