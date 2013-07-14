@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2013-07-14T10:03:08+10:00</updated>
+  <updated>2013-07-14T10:05:17+10:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -127,14 +127,7 @@ Here are the list of softwares that we&rsquo;ll be using for this tutorial:</p>
     <link href="http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress/"/>
     <updated>2013-06-29T17:26:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress</id>
-    <content type="html"><![CDATA[<h2>
-  Moved to Github Pages and Octopress
-</h2>
-
-
-
-
-<h3>29 June 2013</h3>
+    <content type="html"><![CDATA[<h3>29 June 2013</h3>
 
 
 <p>So, I was bored again with my current blogging framework and decided to move to Github Pages. I&rsquo;ve made a couple of research and Octopress is apparently the way to go and is based on Jekyll. So how does one setup a Github Pages site with Octopress?</p>
@@ -167,14 +160,7 @@ Here are the list of softwares that we&rsquo;ll be using for this tutorial:</p>
     <link href="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/"/>
     <updated>2012-02-14T00:00:00+11:00</updated>
     <id>http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update</id>
-    <content type="html"><![CDATA[<h2>
-  BatchJHaml Update
-</h2>
-
-
-
-
-<h3>14 February 2012</h3>
+    <content type="html"><![CDATA[<h3>14 February 2012</h3>
 
 
 <p>I&rsquo;ve updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.
