@@ -2,53 +2,53 @@
 <urlset xmlns='http://www.sitemaps.org/schemas/sitemap/0.9'>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2011/05/18/how-to-install-jekyll/</loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:08:18+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://pugnusferreus.github.io/blog/2011/05/23/things-to-do-before-you-start-programming/
         </loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:08:11+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://pugnusferreus.github.io/blog/2011/06/05/unit-test-your-java-dao-with-hibernate-and-hsql/
         </loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:08:05+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito/</loc>
-        <lastmod>2013-07-03T23:01:40+10:00</lastmod>
+        <lastmod>2013-07-14T10:07:58+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker/</loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:07:51+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2/</loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:07:42+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml/</loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:07:35+10:00</lastmod>
     </url>
     <url>
         <loc>
             http://pugnusferreus.github.io/blog/2011/10/22/normalize-your-video-with-ffmpeg/
         </loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:07:22+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2012/01/06/hibernate-wont-update/</loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:07:16+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java/</loc>
-        <lastmod>2013-06-29T17:54:19+10:00</lastmod>
+        <lastmod>2013-07-14T10:07:11+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/</loc>
-        <lastmod>2013-07-14T10:05:12+10:00</lastmod>
+        <lastmod>2013-07-14T10:06:09+10:00</lastmod>
     </url>
     <url>
         <loc>
@@ -66,11 +66,11 @@
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/blog/archives/</loc>
-        <lastmod>2013-07-14T10:05:12+10:00</lastmod>
+        <lastmod>2013-07-14T10:08:18+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/</loc>
-        <lastmod>2013-07-14T10:05:12+10:00</lastmod>
+        <lastmod>2013-07-14T10:08:18+10:00</lastmod>
     </url>
     <url>
         <loc>http://pugnusferreus.github.io/robots.txt</loc>
