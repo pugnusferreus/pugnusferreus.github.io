@@ -125,12 +125,12 @@ Here are the list of softwares that we&rsquo;ll be using for this tutorial:</p>
 <ol>
 <li>Extract the English audio from the MOV file. <code>ffmpeg -i VIDEO_FILE_NAME.mov -map 0:1 -ac:a:0 2 -acodec libfaac -vn track_en.aac</code></li>
 <li>Extract the Chinese audio from the MOV file. <code>ffmpeg -i VIDEO_FILE_NAME.mov -map 0:2 -ac:a:0 2 -acodec libfaac -vn track_zh.aac</code></li>
-<li>Copy track_en.aac to trackEn folder and go to the trackEn folder.</li>
-<li>Convert <code>track_en.aac</code> file to TS files. <code>ffmpeg -i track_en.aac -acodec libfaac -vcodec copy -vn -map 0 -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts</code></li>
-<li>Copy track_zh.aac to trackZh folder and go to the trackZh folder.</li>
-<li>Convert <code>track_zh.aac</code> file to TS files. <code>ffmpeg -i track_zh.aac -acodec libfaac -vcodec copy -vn -map 0 -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts</code></li>
+<li>Go to trackEn folder and run <code>ffmpeg -i track_en.aac -map 0:1 -ac:a:0 2 -acodec libfaac -vcodec copy -dcodec copy -vn -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts</code></li>
+<li>Go to trackZh folder and run <code>track_zh.aac</code> file to TS files. <code>ffmpeg -i track_zh.aac -map 0:2 -ac:a:0 2 -acodec libfaac -vcodec copy -vn -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts</code></li>
 </ol>
 
+
+<p>Edit: We&rsquo;ll need to do segmenting and the audio extraction in one line to preserve the PTS values. Incorrect PTS values will result in audio/video out of sync.</p>
 
 <p>So finally, you should have the following directory structure.</p>
 
