@@ -34,10 +34,10 @@ You'll have to know which audio track belongs to which language. The easiest way
 
 1.  Extract the English audio from the MOV file. `ffmpeg -i VIDEO_FILE_NAME.mov -map 0:1 -ac:a:0 2 -acodec libfaac -vn track_en.aac`
 2.  Extract the Chinese audio from the MOV file. `ffmpeg -i VIDEO_FILE_NAME.mov -map 0:2 -ac:a:0 2 -acodec libfaac -vn track_zh.aac`
-3.  Copy track_en.aac to trackEn folder and go to the trackEn folder.
-4.  Convert `track_en.aac` file to TS files. `ffmpeg -i track_en.aac -acodec libfaac -vcodec copy -vn -map 0 -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts`
-5.  Copy track_zh.aac to trackZh folder and go to the trackZh folder.
-6.  Convert `track_zh.aac` file to TS files. `ffmpeg -i track_zh.aac -acodec libfaac -vcodec copy -vn -map 0 -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts`
+3.  Go to trackEn folder and run `ffmpeg -i track_en.aac -map 0:1 -ac:a:0 2 -acodec libfaac -vcodec copy -dcodec copy -vn -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts`
+4.  Go to trackZh folder and run `track_zh.aac` file to TS files. `ffmpeg -i track_zh.aac -map 0:2 -ac:a:0 2 -acodec libfaac -vcodec copy -vn -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts`
+
+Edit: We'll need to do segmenting and the audio extraction in one line to preserve the PTS values. Incorrect PTS values will result in audio/video out of sync.
 
 So finally, you should have the following directory structure. 
 
