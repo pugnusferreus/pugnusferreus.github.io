@@ -3,8 +3,6 @@ layout: post
 title: BatchJHaml Update
 ---
 
-<h3>14 February 2012</h3>
-
 I've updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.
 If you set the last argument to true, it'll generate the Haml file in subdirectories as well.
 Do note that the layout folder will be omitted.

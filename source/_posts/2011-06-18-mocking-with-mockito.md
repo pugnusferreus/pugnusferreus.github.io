@@ -3,8 +3,6 @@ layout: post
 title: Mocking with Mockito
 ---
 
-<h3>18 June 2011</h3>
-
 At movideo, we're using <a href="http://mockito.org/">Mockito</a> as our mocking framework.
 Mockito provides a clean and simple API to mock your Java objects.
 

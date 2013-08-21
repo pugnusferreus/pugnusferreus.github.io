@@ -3,8 +3,6 @@ layout: post
 title: Modernizing Lunchpicker Part 2
 ---
 
-<h3>9 July 2011</h3>
-
 When I wrote lunchpicker, I was obviously not yet enlightened with <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>.
 While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity to learn <a href="http://rspec.info/">RSpec</a>.
 So again, here is my journey with RSpec. Since lunchpicker is a Rails app, I'll be using <a href="http://rspec.info/rails/">rspec-rails</a>

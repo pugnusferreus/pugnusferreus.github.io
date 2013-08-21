@@ -3,8 +3,6 @@ layout: post
 title: Generating JSPs With BatchJHaml
 ---
 
-<h3>10 July 2011</h3>
-
 Last year, I was assigned to build a web app using <a href="http://struts.apache.org/">Struts</a>.
 I wanted a Haml interpreter and found <a href="https://github.com/raymyers/JHaml">JHaml</a>.
 The problem is it only converts Haml strings to HTML. I need something to convert .haml files to .html or .jsp files.

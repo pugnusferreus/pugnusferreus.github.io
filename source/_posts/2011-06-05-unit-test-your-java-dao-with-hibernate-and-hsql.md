@@ -3,8 +3,6 @@ layout: post
 title: Unit Test Your Java DAO With Hibernate And HSQL DB
 ---
 
-<h3>05 June 2011</h3>
-
 Unlike Rails which allow you to do unit test on your models, there's no easy way to actually unit test your Java DAO. 
 Sometimes, we do not have access to the development database or we do not want to polute the development database with our data.
 

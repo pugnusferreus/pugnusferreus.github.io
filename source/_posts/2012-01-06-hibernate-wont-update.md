@@ -3,8 +3,6 @@ layout: post
 title: Hibernate won't update my object!
 ---
 
-<h3>06 January 2012</h3>
-
 Yesterday, I was given a Hibernate related bug to fix. 
 We have an object, say object A which has a list of object B. 
 This list of object B are stored as a JSON string in table A.

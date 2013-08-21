@@ -3,8 +3,6 @@ layout: post
 title: How to install jekyll
 ---
 
-<h3>18 May 2011</h3>
-
 This is my first blog post entry for progriff.com. Since this blog was made with <a href="https://github.com/mojombo/jekyll">Jekyll</a>, I'll walk you through how to setup a basic blog with Jekyll. Why Jekyll? Here are a couple of points I could think of :
 
 - It generates static pages for you.

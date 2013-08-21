@@ -6,8 +6,6 @@ comments: true
 categories: ffmpeg
 ---
 
-<h3>03 July 2013</h3>
-
 <h4>Edit: Found out that ffmpeg could do the segmenting instead of segmenter</h4>
 
 Here's a short tutorial on how to create a Http Live Stream v4 with AES encryption from a MOV file with multiple language track.

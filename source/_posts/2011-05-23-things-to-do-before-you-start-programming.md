@@ -3,8 +3,6 @@ layout: post
 title: Things to do before you start programming
 ---
 
-<h3>23 May 2011</h3>
-
 I've been reading <a href="http://pragprog.com/titles/ahptl/pragmatic-thinking-and-learning">Pragmatic Thinking & Learning</a> by Andy Hunt. 
 In one of the chapters, the author talks about UML. Yes, even I myself find that UML can get a bit boring. He suggests that I literally draw out
 the diagram. And so I did. The author also suggests that you can do the same with Lego bricks or by role playing, but I won't go into that.

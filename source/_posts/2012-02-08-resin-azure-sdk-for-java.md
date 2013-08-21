@@ -3,8 +3,6 @@ layout: post
 title: Resin 3.1 and Azure SDK for Java
 ---
 
-<h3>08 February 2012</h3>
-
 I was writing a REST service that will send a Cloud Queue Message to Azure. 
 After testing my utility class with JUnit, it passed.
 However, when I tried to send a Cloud Queue Message via REST service (hosted in Resin 3.1), I got the following error:
