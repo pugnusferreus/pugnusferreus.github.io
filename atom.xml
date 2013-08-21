@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2013-07-29T13:44:48+10:00</updated>
+  <updated>2013-08-21T14:56:07+10:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -14,16 +14,65 @@
 
   
   <entry>
+    <title type="html"><![CDATA[Convert your python script into a Windows executable]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2013/08/21/convert-your-python-script-into-a-windows-executable/"/>
+    <updated>2013-08-21T14:02:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2013/08/21/convert-your-python-script-into-a-windows-executable</id>
+    <content type="html"><![CDATA[<p>During our migration to Windows Azure, we&rsquo;ve found out that one of our script that does video rotation is a python script.
+Of course, when you&rsquo;re on a Windows platform, it&rsquo;ll be better off for you to run the script as a Windows executable file.</p>
+
+<p>What you need:</p>
+
+<ul>
+<li> <a href="http://www.py2exe.org/">py2exe</a></li>
+<li> <a href="http://www.python.org/download/">python</a></li>
+</ul>
+
+
+<p>&nbsp;</p>
+
+<p>1 .  Install python and py2exe</p>
+
+<p>2 .  Create a simple python script. Name it <code>hello.py</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>print "This is a windows executable"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3 .  Create a <code>setup.py</code> file</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from distutils.core import setup
+</span><span class='line'>import py2exe
+</span><span class='line'>
+</span><span class='line'>setup(console=['hello.py'])</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4 .  Open <code>cmd.exe</code> and go to your working directory.</p>
+
+<p>5 .  We need to install the dependencies that are required by our python script. Run <code>python setup.py install</code></p>
+
+<p>6 .  Then, we convert the python script to an exe with <code>python setup.py py2exe</code></p>
+
+<p>7 .  Your <code>hello.exe</code> will be in the dist directory.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>C:\temp&gt;dist\hello.exe
+</span><span class='line'>This is a windows executable</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
     <title type="html"><![CDATA[Create a HLS4 with AES stream]]></title>
     <link href="http://pugnusferreus.github.io/blog/2013/07/03/create-a-hls4-with-aes-stream/"/>
     <updated>2013-07-03T14:21:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2013/07/03/create-a-hls4-with-aes-stream</id>
-    <content type="html"><![CDATA[<h3>03 July 2013</h3>
-
-
-
-
-<h4>Edit: Found out that ffmpeg could do the segmenting instead of segmenter</h4>
+    <content type="html"><![CDATA[<h4>Edit: Found out that ffmpeg could do the segmenting instead of segmenter</h4>
 
 
 <p>Here&rsquo;s a short tutorial on how to create a Http Live Stream v4 with AES encryption from a MOV file with multiple language track.
@@ -127,10 +176,7 @@ Here are the list of softwares that we&rsquo;ll be using for this tutorial:</p>
     <link href="http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress/"/>
     <updated>2013-06-29T17:26:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress</id>
-    <content type="html"><![CDATA[<h3>29 June 2013</h3>
-
-
-<p>So, I was bored again with my current blogging framework and decided to move to Github Pages. I&rsquo;ve made a couple of research and Octopress is apparently the way to go and is based on Jekyll. So how does one setup a Github Pages site with Octopress?</p>
+    <content type="html"><![CDATA[<p>So, I was bored again with my current blogging framework and decided to move to Github Pages. I&rsquo;ve made a couple of research and Octopress is apparently the way to go and is based on Jekyll. So how does one setup a Github Pages site with Octopress?</p>
 
 <p>If you don&rsquo;t have a Github account, do it!</p>
 
@@ -160,10 +206,7 @@ Here are the list of softwares that we&rsquo;ll be using for this tutorial:</p>
     <link href="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/"/>
     <updated>2012-02-14T00:00:00+11:00</updated>
     <id>http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update</id>
-    <content type="html"><![CDATA[<h3>14 February 2012</h3>
-
-
-<p>I&rsquo;ve updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.
+    <content type="html"><![CDATA[<p>I&rsquo;ve updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.
 If you set the last argument to true, it&rsquo;ll generate the Haml file in subdirectories as well.
 Do note that the layout folder will be omitted.</p>
 
@@ -219,10 +262,7 @@ jsp
     <link href="http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java/"/>
     <updated>2012-02-08T00:00:00+11:00</updated>
     <id>http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java</id>
-    <content type="html"><![CDATA[<h3>08 February 2012</h3>
-
-
-<p>I was writing a REST service that will send a Cloud Queue Message to Azure.
+    <content type="html"><![CDATA[<p>I was writing a REST service that will send a Cloud Queue Message to Azure.
 After testing my utility class with JUnit, it passed.
 However, when I tried to send a Cloud Queue Message via REST service (hosted in Resin 3.1), I got the following error:</p>
 
@@ -294,10 +334,7 @@ I&rsquo;ll keep you posted if I&rsquo;ve found anymore weird stuff.</p>
     <link href="http://pugnusferreus.github.io/blog/2012/01/06/hibernate-wont-update/"/>
     <updated>2012-01-06T00:00:00+11:00</updated>
     <id>http://pugnusferreus.github.io/blog/2012/01/06/hibernate-wont-update</id>
-    <content type="html"><![CDATA[<h3>06 January 2012</h3>
-
-
-<p>Yesterday, I was given a Hibernate related bug to fix.
+    <content type="html"><![CDATA[<p>Yesterday, I was given a Hibernate related bug to fix.
 We have an object, say object A which has a list of object B.
 This list of object B are stored as a JSON string in table A.</p>
 
@@ -338,6 +375,8 @@ public Object deepCopy(Object value) throws HibernateException
 }</code></pre>
 </div>
 
+
+
 ]]></content>
   </entry>
   
@@ -346,10 +385,7 @@ public Object deepCopy(Object value) throws HibernateException
     <link href="http://pugnusferreus.github.io/blog/2011/10/22/normalize-your-video-with-ffmpeg/"/>
     <updated>2011-10-22T00:00:00+11:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/10/22/normalize-your-video-with-ffmpeg</id>
-    <content type="html"><![CDATA[<h3>22 October 2011</h3>
-
-
-<p>It&rsquo;s been a while since I&rsquo;ve updated my blog. I didn&rsquo;t encounter any weird things until last week.</p>
+    <content type="html"><![CDATA[<p>It&rsquo;s been a while since I&rsquo;ve updated my blog. I didn&rsquo;t encounter any weird things until last week.</p>
 
 <p>At Movideo, we&rsquo;ve been haunted by videos that goes out of sync with it&rsquo;s audio.
 The symptom goes something like this:</p>
@@ -392,10 +428,7 @@ Then, I tried uploading the output.mov via Movideo&rsquo;s Admin interface and t
     <link href="http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml/"/>
     <updated>2011-07-10T00:00:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml</id>
-    <content type="html"><![CDATA[<h3>10 July 2011</h3>
-
-
-<p>Last year, I was assigned to build a web app using <a href="http://struts.apache.org/">Struts</a>.
+    <content type="html"><![CDATA[<p>Last year, I was assigned to build a web app using <a href="http://struts.apache.org/">Struts</a>.
 I wanted a Haml interpreter and found <a href="https://github.com/raymyers/JHaml">JHaml</a>.
 The problem is it only converts Haml strings to HTML. I need something to convert .haml files to .html or .jsp files.
 Why should you use Haml? See <a href="http://haml-lang.com/">here</a>.</p>
@@ -469,10 +502,7 @@ If you have a later version of the following jars, you can use them as well.</p>
     <link href="http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2/"/>
     <updated>2011-07-09T00:00:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2</id>
-    <content type="html"><![CDATA[<h3>9 July 2011</h3>
-
-
-<p>When I wrote lunchpicker, I was obviously not yet enlightened with <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>.
+    <content type="html"><![CDATA[<p>When I wrote lunchpicker, I was obviously not yet enlightened with <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>.
 While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity to learn <a href="http://rspec.info/">RSpec</a>.
 So again, here is my journey with RSpec. Since lunchpicker is a Rails app, I&rsquo;ll be using <a href="http://rspec.info/rails/">rspec-rails</a></p>
 
@@ -531,10 +561,7 @@ We&rsquo;re interacting with Google Weather which is an external API.</p>
     <link href="http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker/"/>
     <updated>2011-06-26T00:00:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker</id>
-    <content type="html"><![CDATA[<h3>26 June 2011</h3>
-
-
-<p>Lunchpicker is my first project with Rails. Back then, there was alot of hype regarding Rails and that was why I started Lunchpicker
+    <content type="html"><![CDATA[<p>Lunchpicker is my first project with Rails. Back then, there was alot of hype regarding Rails and that was why I started Lunchpicker
 to have a taste of Ruby On Rails. Yes, I fell in love with it immediately.</p>
 
 <p>Wife had some plans for the entire afternoon and I&rsquo;ve decided to dedicate my entire Saturday afternoon on migrating Lunchpicker from Rails 2 to Rails 3.
@@ -661,10 +688,7 @@ I&rsquo;ll use this opportunity to add unit test with RSpec.</p>
     <link href="http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito/"/>
     <updated>2011-06-18T00:00:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito</id>
-    <content type="html"><![CDATA[<h3>18 June 2011</h3>
-
-
-<p>At movideo, we&rsquo;re using <a href="http://mockito.org/">Mockito</a> as our mocking framework.
+    <content type="html"><![CDATA[<p>At movideo, we&rsquo;re using <a href="http://mockito.org/">Mockito</a> as our mocking framework.
 Mockito provides a clean and simple API to mock your Java objects.</p>
 
 <p>Let&rsquo;s say Class1 has a couple of arguments for it&rsquo;s constructor and you do not want to provide each arguments,
@@ -724,10 +748,7 @@ from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Pr
     <link href="http://pugnusferreus.github.io/blog/2011/06/05/unit-test-your-java-dao-with-hibernate-and-hsql/"/>
     <updated>2011-06-05T00:00:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/06/05/unit-test-your-java-dao-with-hibernate-and-hsql</id>
-    <content type="html"><![CDATA[<h3>05 June 2011</h3>
-
-
-<p>Unlike Rails which allow you to do unit test on your models, there&rsquo;s no easy way to actually unit test your Java DAO.
+    <content type="html"><![CDATA[<p>Unlike Rails which allow you to do unit test on your models, there&rsquo;s no easy way to actually unit test your Java DAO.
 Sometimes, we do not have access to the development database or we do not want to polute the development database with our data.</p>
 
 <p>Sure, we could run a local db on our machine.
@@ -760,10 +781,7 @@ Open up &ldquo;com.progriff.dao.UserDaoTest&rdquo; and you can see that it&rsquo
     <link href="http://pugnusferreus.github.io/blog/2011/05/23/things-to-do-before-you-start-programming/"/>
     <updated>2011-05-23T00:00:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/05/23/things-to-do-before-you-start-programming</id>
-    <content type="html"><![CDATA[<h3>23 May 2011</h3>
-
-
-<p>I&rsquo;ve been reading <a href="http://pragprog.com/titles/ahptl/pragmatic-thinking-and-learning">Pragmatic Thinking &amp; Learning</a> by Andy Hunt.
+    <content type="html"><![CDATA[<p>I&rsquo;ve been reading <a href="http://pragprog.com/titles/ahptl/pragmatic-thinking-and-learning">Pragmatic Thinking &amp; Learning</a> by Andy Hunt.
 In one of the chapters, the author talks about UML. Yes, even I myself find that UML can get a bit boring. He suggests that I literally draw out
 the diagram. And so I did. The author also suggests that you can do the same with Lego bricks or by role playing, but I won&rsquo;t go into that.</p>
 
@@ -799,10 +817,7 @@ we might externally syndicate our videos to another provider (eg. Vimeo). So, I 
     <link href="http://pugnusferreus.github.io/blog/2011/05/18/how-to-install-jekyll/"/>
     <updated>2011-05-18T00:00:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2011/05/18/how-to-install-jekyll</id>
-    <content type="html"><![CDATA[<h3>18 May 2011</h3>
-
-
-<p>This is my first blog post entry for progriff.com. Since this blog was made with <a href="https://github.com/mojombo/jekyll">Jekyll</a>, I&rsquo;ll walk you through how to setup a basic blog with Jekyll. Why Jekyll? Here are a couple of points I could think of :</p>
+    <content type="html"><![CDATA[<p>This is my first blog post entry for progriff.com. Since this blog was made with <a href="https://github.com/mojombo/jekyll">Jekyll</a>, I&rsquo;ll walk you through how to setup a basic blog with Jekyll. Why Jekyll? Here are a couple of points I could think of :</p>
 
 <ul>
 <li>It generates static pages for you.</li>

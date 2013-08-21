@@ -4,7 +4,7 @@
   <title><![CDATA[Category: ffmpeg | Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/blog/categories/ffmpeg/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2013-07-29T13:44:48+10:00</updated>
+  <updated>2013-08-21T14:56:07+10:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -18,12 +18,7 @@
     <link href="http://pugnusferreus.github.io/blog/2013/07/03/create-a-hls4-with-aes-stream/"/>
     <updated>2013-07-03T14:21:00+10:00</updated>
     <id>http://pugnusferreus.github.io/blog/2013/07/03/create-a-hls4-with-aes-stream</id>
-    <content type="html"><![CDATA[<h3>03 July 2013</h3>
-
-
-
-
-<h4>Edit: Found out that ffmpeg could do the segmenting instead of segmenter</h4>
+    <content type="html"><![CDATA[<h4>Edit: Found out that ffmpeg could do the segmenting instead of segmenter</h4>
 
 
 <p>Here&rsquo;s a short tutorial on how to create a Http Live Stream v4 with AES encryption from a MOV file with multiple language track.
