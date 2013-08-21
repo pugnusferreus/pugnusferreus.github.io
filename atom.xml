@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2013-08-21T14:56:07+10:00</updated>
+  <updated>2013-08-21T15:30:37+10:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,21 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Always flush your Python file object]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2013/08/21/always-flush-your-python-file-object/"/>
+    <updated>2013-08-21T15:19:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2013/08/21/always-flush-your-python-file-object</id>
+    <content type="html"><![CDATA[<p>If you&rsquo;re running Python on Windows and if you&rsquo;re dealing with read and writing files,
+remember to do a <code>file.flush()</code> after a <code>file.write()</code>.</p>
+
+<p>On POSIX systems, it seems that the <code>file.read()</code> method will automatically commit the changes onto the file.
+On Windows systems, it&rsquo;ll add a null character instead of the character that you&rsquo;re writing into the file.</p>
+
+<p>So remember kids! Do a <code>.flush()</code> after a <code>.write()</code>!</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Convert your python script into a Windows executable]]></title>
