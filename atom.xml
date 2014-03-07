@@ -1,0 +1,920 @@
+<?xml version="1.0" encoding="utf-8"?>
+<feed xmlns="http://www.w3.org/2005/Atom">
+
+  <title><![CDATA[Benson's Programming Journey]]></title>
+  <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
+  <link href="http://pugnusferreus.github.io/"/>
+  <updated>2013-08-21T15:30:37+10:00</updated>
+  <id>http://pugnusferreus.github.io/</id>
+  <author>
+    <name><![CDATA[Benson Lim]]></name>
+    
+  </author>
+  <generator uri="http://octopress.org/">Octopress</generator>
+
+  
+  <entry>
+    <title type="html"><![CDATA[Always flush your Python file object]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2013/08/21/always-flush-your-python-file-object/"/>
+    <updated>2013-08-21T15:19:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2013/08/21/always-flush-your-python-file-object</id>
+    <content type="html"><![CDATA[<p>If you&rsquo;re running Python on Windows and if you&rsquo;re dealing with read and writing files,
+remember to do a <code>file.flush()</code> after a <code>file.write()</code>.</p>
+
+<p>On POSIX systems, it seems that the <code>file.read()</code> method will automatically commit the changes onto the file.
+On Windows systems, it&rsquo;ll add a null character instead of the character that you&rsquo;re writing into the file.</p>
+
+<p>So remember kids! Do a <code>.flush()</code> after a <code>.write()</code>!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Convert your python script into a Windows executable]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2013/08/21/convert-your-python-script-into-a-windows-executable/"/>
+    <updated>2013-08-21T14:02:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2013/08/21/convert-your-python-script-into-a-windows-executable</id>
+    <content type="html"><![CDATA[<p>During our migration to Windows Azure, we&rsquo;ve found out that one of our script that does video rotation is a python script.
+Of course, when you&rsquo;re on a Windows platform, it&rsquo;ll be better off for you to run the script as a Windows executable file.</p>
+
+<p>What you need:</p>
+
+<ul>
+<li> <a href="http://www.py2exe.org/">py2exe</a></li>
+<li> <a href="http://www.python.org/download/">python</a></li>
+</ul>
+
+
+<p>&nbsp;</p>
+
+<p>1 .  Install python and py2exe</p>
+
+<p>2 .  Create a simple python script. Name it <code>hello.py</code></p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>print "This is a windows executable"</span></code></pre></td></tr></table></div></figure>
+
+
+<p>3 .  Create a <code>setup.py</code> file</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>from distutils.core import setup
+</span><span class='line'>import py2exe
+</span><span class='line'>
+</span><span class='line'>setup(console=['hello.py'])</span></code></pre></td></tr></table></div></figure>
+
+
+<p>4 .  Open <code>cmd.exe</code> and go to your working directory.</p>
+
+<p>5 .  We need to install the dependencies that are required by our python script. Run <code>python setup.py install</code></p>
+
+<p>6 .  Then, we convert the python script to an exe with <code>python setup.py py2exe</code></p>
+
+<p>7 .  Your <code>hello.exe</code> will be in the dist directory.</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>C:\temp&gt;dist\hello.exe
+</span><span class='line'>This is a windows executable</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Create a HLS4 with AES stream]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2013/07/03/create-a-hls4-with-aes-stream/"/>
+    <updated>2013-07-03T14:21:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2013/07/03/create-a-hls4-with-aes-stream</id>
+    <content type="html"><![CDATA[<h4>Edit: Found out that ffmpeg could do the segmenting instead of segmenter</h4>
+
+
+<p>Here&rsquo;s a short tutorial on how to create a Http Live Stream v4 with AES encryption from a MOV file with multiple language track.
+Here are the list of softwares that we&rsquo;ll be using for this tutorial:</p>
+
+<ul>
+<li> <a href="http://handbrake.fr/downloads2.php">HandbrakeCLI</a></li>
+<li> <a href="http://www.ffmpeg.org/download.html">FFmpeg</a></li>
+</ul>
+
+
+<p>If you&rsquo;re on Windows:</p>
+
+<ul>
+<li> <a href="http://slproweb.com/products/Win32OpenSSL.html">OpenSSL</a></li>
+<li> <a href="http://www.richpasco.org/utilities/hexdump.html">HexDump</a></li>
+</ul>
+
+
+<h4>Converting the MOV file to TS file</h4>
+
+
+<ol>
+<li>Convert the MOV file to MP4. <code>HandBrakeCLI -i VIDEO_FILE_NAME.mov -o VIDEO_FILE_NAME.mp4 --preset=iPad -d slow</code></li>
+<li>Convert the MP4 file to segments of TS file. <code>ffmpeg -i VIDEO_FILE_NAME.mp4 -acodec libfaac -vcodec libx264 -an -map 0 -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts</code></li>
+<li>Use OpenSSL to create a random key file. <code>openssl rand 16 &gt; static.key</code></li>
+<li>Use hexdump on the static.key to retrieve the hex key.</li>
+<li>For each TS file generated by the segmenter command, use openSSL to encrypt the TS files. <code>openssl aes-128-cbc -e -in stream-1.ts -out tsAes\stream-1.ts -p -nosalt -iv 0 -K YOUR_AES_KEY</code>. Your encrypted TS files should be in the tsAes folder.</li>
+<li>Move the static.key to the <code>tsAes</code> folder.</li>
+</ol>
+
+
+<h4>Extracting the audio tracks from the MOV file</h4>
+
+
+<p>You&rsquo;ll have to know which audio track belongs to which language. The easiest way to check the language is to play the video via VLC and identify the language of each audio track. Let&rsquo;s assume that Stream 0:1 is English and Stream 0:2 is Chinese.</p>
+
+<ol>
+<li>Extract the English audio from the MOV file. <code>ffmpeg -i VIDEO_FILE_NAME.mov -map 0:1 -ac:a:0 2 -acodec libfaac -vn track_en.aac</code></li>
+<li>Extract the Chinese audio from the MOV file. <code>ffmpeg -i VIDEO_FILE_NAME.mov -map 0:2 -ac:a:0 2 -acodec libfaac -vn track_zh.aac</code></li>
+<li>Go to trackEn folder and run <code>ffmpeg -i track_en.aac -map 0:1 -ac:a:0 2 -acodec libfaac -vcodec copy -dcodec copy -vn -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts</code></li>
+<li>Go to trackZh folder and run <code>track_zh.aac</code> file to TS files. <code>ffmpeg -i track_zh.aac -map 0:2 -ac:a:0 2 -acodec libfaac -vcodec copy -vn -f segment -segment_time 10 -segment_list segment.m3u8 -segment_format mpegts -vbsf h264_mp4toannexb -flags -global_header stream-%d.ts</code></li>
+</ol>
+
+
+<p>Edit: We&rsquo;ll need to do segmenting and the audio extraction in one line to preserve the PTS values. Incorrect PTS values will result in audio/video out of sync.</p>
+
+<p>So finally, you should have the following directory structure.</p>
+
+<ul>
+<li>root
+
+<ul>
+<li>tsAes
+
+<ul>
+<li>all your encrypted video files</li>
+<li>static.key</li>
+<li>stream.m3u8</li>
+</ul>
+</li>
+<li>trackEn
+
+<ul>
+<li>all your English audio track segments</li>
+<li>stream.m3u8</li>
+</ul>
+</li>
+<li>trackZh
+
+<ul>
+<li>all your Chinese audio track segments</li>
+<li>stream.m3u8</li>
+</ul>
+</li>
+</ul>
+</li>
+</ul>
+
+
+<p>On the root directory, create a stream.m3u8 file. It should look something like this:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#EXTM3U
+</span><span class='line'>#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="English",DEFAULT=YES,AUTOSELECT=YES ,LANGUAGE="eng",URI="trackEn/stream.m3u8"
+</span><span class='line'>#EXT-X-MEDIA:TYPE=AUDIO,GROUP-ID="aac",NAME="Chinese",DEFAULT=NO,AUTOSELECT=NO ,LANGUAGE="zho",URI="trackZh/stream.m3u8"
+</span><span class='line'>
+</span><span class='line'>#EXT-X-STREAM-INF:PROGRAM-ID=1,BANDWIDTH=600000,AUDIO="aac"
+</span><span class='line'>tsAes/stream.m3u8</span></code></pre></td></tr></table></div></figure>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Moved to Github Pages and Octopress]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress/"/>
+    <updated>2013-06-29T17:26:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2013/06/29/moved-to-github-pages-and-octopress</id>
+    <content type="html"><![CDATA[<p>So, I was bored again with my current blogging framework and decided to move to Github Pages. I&rsquo;ve made a couple of research and Octopress is apparently the way to go and is based on Jekyll. So how does one setup a Github Pages site with Octopress?</p>
+
+<p>If you don&rsquo;t have a Github account, do it!</p>
+
+<ol>
+<li>Create a repository with $YOUR_USERNAME_OR_ORGANIZATION.github.io</li>
+<li>Install git, ruby, bundle and rake.</li>
+<li>Make sure that your ruby version is 1.9.3. I&rsquo;m currently using RVM.</li>
+<li><code>git clone git://github.com/imathis/octopress.git octopress</code></li>
+<li><code>cd octopress</code></li>
+<li><code>bundle install</code></li>
+<li><code>rake install</code></li>
+<li><code>rake setup_github_pages</code> and enter your repository details</li>
+<li>Make sure that origin points to your local repository. You can double check with <code>git remote -v</code></li>
+<li>Modify your _config.yml file</li>
+<li><code>rake generate</code></li>
+<li><code>rake deploy</code></li>
+<li>Wait for a couple of minutes and your blog will be up on yourdomain.github.io</li>
+<li>To change your theme, go to the <a href="https://github.com/imathis/octopress/wiki/3rd-Party-Octopress-Themes">Octopress Themes</a> page and follow the instructions.</li>
+<li>Once you&rsquo;re done for the day, don&rsquo;t forget to commit and push your changes with <code>git push origin source</code></li>
+</ol>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[BatchJHaml Update]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/"/>
+    <updated>2012-02-14T00:00:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.
+If you set the last argument to true, it&rsquo;ll generate the Haml file in subdirectories as well.
+Do note that the layout folder will be omitted.</p>
+
+<p>Here is a sample from my build.xml</p>
+
+<div>
+  <pre><code class='xml'>&lt;target name=&quot;run&quot;&gt;
+  &lt;java fork=&quot;true&quot; 
+    classname=&quot;com.progriff.jhaml.BatchJHaml&quot; 
+    outputproperty=&quot;javaoutput&quot;&gt;
+    &lt;classpath&gt;
+      &lt;path refid=&quot;classpath&quot;/&gt;
+      &lt;path location=&quot;${dist}/BatchJHaml.jar&quot;/&gt;
+    &lt;/classpath&gt;
+    &lt;arg value=&quot;${haml.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.layout.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.output.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.output.extension}&quot;/&gt;
+    &lt;arg value=&quot;${haml.javascript.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.stylesheet.path}&quot;/&gt;
+    &lt;arg value=&quot;${haml.recursive}&quot; /&gt;
+    &lt;/java&gt;&lt;echo message=&quot;${javaoutput}&quot; /&gt;
+&lt;/target&gt;</code></pre>
+</div>
+
+
+<p>For example if you have the following in your haml folder,</p>
+
+<pre class="text">
+haml
+  |-- someDir
+        `- baz.haml
+  `foo.haml
+  `- bar.haml
+</pre>
+
+
+<p>The resulting jsp folder will look like this</p>
+
+<pre class="text">
+jsp
+  |-- someDir
+        `- baz.jsp
+  `foo.jsp
+  `- bar.jsp
+</pre>
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Resin 3.1 and Azure SDK for Java]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java/"/>
+    <updated>2012-02-08T00:00:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java</id>
+    <content type="html"><![CDATA[<p>I was writing a REST service that will send a Cloud Queue Message to Azure.
+After testing my utility class with JUnit, it passed.
+However, when I tried to send a Cloud Queue Message via REST service (hosted in Resin 3.1), I got the following error:</p>
+
+<div>
+  <pre><code class='java'>java.lang.IllegalArgumentException: property 
+  &quot;javax.xml.stream.isReplacingEntityReferences&quot; not supported
+at com.caucho.xml.stream.XMLInputFactoryImpl.setProperty
+  (XMLInputFactoryImpl.java:265)
+at com.microsoft.windowsazure.services.core.storage.utils
+  .Utility.createXMLStreamReaderFromStream(Utility.java:321)</code></pre>
+</div>
+
+
+<p>Resin Web Server uses it&rsquo;s own <code>XMLInputFactory</code> implementation called <code>com.caucho.xml.stream.XMLInputFactoryImpl</code>.
+According to this <a href="http://www.caucho.com/resin-3.1/doc/jaxp.xtp">article</a>, you can override the
+implementation by having <code>&lt;system-property/&gt;</code> following in your <code>resin.conf</code>.
+Put the following to use the JDK&rsquo;s version of XMLInputFactoryImpl</p>
+
+<div>
+  <pre><code class='xml'>&lt;system-property javax.xml.stream.XMLInputFactory=
+  &quot;com.sun.xml.internal.stream.XMLInputFactoryImpl&quot; /&gt;</code></pre>
+</div>
+
+
+<p>Problem solved? Not really. Tried running the REST service again and I got the following:</p>
+
+<div>
+  <pre><code class='java'>com.microsoft.windowsazure.services.core.storage.StorageException: 
+  XML specified is not syntactically valid.</code></pre>
+</div>
+
+
+<p>After looking at the Azure SDK for Java&rsquo;s <a href="https://github.com/WindowsAzure/azure-sdk-for-java">source</a>,
+I&rsquo;ve found out that the XMLOutputFactory and XMLStreamWriter was unable to generate the XML request body in
+<code>com.microsoft.windowsazure.services.queue.client
+  .QueueRequest.generateMessageRequestBody</code></p>
+
+<p>Why? If you do a simple system out on the class name, resin is using it&rsquo;s own implementation
+for XMLOutputFactory and XMLStreamWriter.
+So add the following as well into your resin.conf</p>
+
+<div>
+  <pre><code class='xml'>&lt;system-property javax.xml.stream.XMLOutputFactory=
+  &quot;com.sun.xml.internal.stream.XMLOutputFactoryImpl&quot; /&gt;
+&lt;system-property javax.xml.stream.XMLStreamWriter=
+  &quot;com.sun.xml.internal.stream.writers.XMLStreamWriterImpl&quot; /&gt;</code></pre>
+</div>
+
+
+<p>tl;dr? Add the following in your resin.conf</p>
+
+<div>
+  <pre><code class='xml'>&lt;system-property javax.xml.stream.XMLInputFactory=
+  &quot;com.sun.xml.internal.stream.XMLInputFactoryImpl&quot; /&gt;
+&lt;system-property javax.xml.stream.XMLOutputFactory=
+  &quot;com.sun.xml.internal.stream.XMLOutputFactoryImpl&quot; /&gt;
+&lt;system-property javax.xml.stream.XMLStreamWriter=
+  &quot;com.sun.xml.internal.stream.writers.XMLStreamWriterImpl&quot; /&gt;</code></pre>
+</div>
+
+
+<p>After that, my code works perfectly. I&rsquo;m sure there are other weird problems as well,
+I&rsquo;ll keep you posted if I&rsquo;ve found anymore weird stuff.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Hibernate won't update my object!]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2012/01/06/hibernate-wont-update/"/>
+    <updated>2012-01-06T00:00:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2012/01/06/hibernate-wont-update</id>
+    <content type="html"><![CDATA[<p>Yesterday, I was given a Hibernate related bug to fix.
+We have an object, say object A which has a list of object B.
+This list of object B are stored as a JSON string in table A.</p>
+
+<p>So here&rsquo;s the problem, after calling a <code>session.update</code> on object A with the updated object B,
+the change was not persisted into the database.
+After hours of Googling and some help from Michael who is a fellow colleague of mine, I found the problem.</p>
+
+<p>According to this <a href="http://stackoverflow.com/questions/4293768/does-hibernate-update-an-entity-that-has-not-changed">article</a>,
+Hibernate will only do a <code>UPDATE</code> statement after <code>session.flush()</code>.
+During this operation, Hibernate will compare the original object and the object to be updated.</p>
+
+<p>This <a href="http://blog.xebia.com/2009/11/09/understanding-and-writing-hibernate-user-types/">article</a> explains
+how Hibernate compares the object.</p>
+
+<p>The fix? In your Hibernate user type, override the <code>deepCopy</code> and return another instance of list.</p>
+
+<div>
+  <pre><code class='java'>@Override
+public Object deepCopy(Object value) throws HibernateException
+{
+
+  // if value is null, return null
+  if(value == null)
+  {
+    return null;
+  }
+
+  // convert the value to a List first
+  List&lt;ObjectB&gt; objectBList = (List&lt;ObjectB&gt;)value;
+
+  // create a new Arraylist and add all the objects
+  List&lt;ObjectB&gt; newObjectBList = new ArrayList&lt;ObjectB&gt;();
+  for(ObjectB objectB : objectBList)
+  {
+    newObjectBList.add(objectB);
+  }
+  return newObjectBList;
+}</code></pre>
+</div>
+
+
+
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Normalize your video with FFmpeg]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/10/22/normalize-your-video-with-ffmpeg/"/>
+    <updated>2011-10-22T00:00:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/10/22/normalize-your-video-with-ffmpeg</id>
+    <content type="html"><![CDATA[<p>It&rsquo;s been a while since I&rsquo;ve updated my blog. I didn&rsquo;t encounter any weird things until last week.</p>
+
+<p>At Movideo, we&rsquo;ve been haunted by videos that goes out of sync with it&rsquo;s audio.
+The symptom goes something like this:</p>
+
+<ol>
+<li>Plays a dynamic bitrate video that was encoded using Movideo&rsquo;s Encoder application.</li>
+<li>In the beginning, audio and video is in sync.</li>
+<li>A crackling noise appeared and then the audio and video goes out of sync.</li>
+</ol>
+
+
+<p>We&rsquo;ve decided to use <a href="http://www.mplayerhq.hu/DOCS/HTML/en/mencoder.html">MEncoder</a> to normalize
+the original video which is in .mov format.</p>
+
+<p>The command</p>
+
+<div>
+  <pre><code class='bash'>mencoder -ovc copy -af volnorm=1 -oac libmp3lame input.mov -o output.mov</code></pre>
+</div>
+
+
+<p>creates a mov file
+which Quick Time won&rsquo;t recognize at all. Tried viewing it with Windows Media Player and there&rsquo;s audio but no video.
+After that, I upload the video via Movideo&rsquo;s Admin interface. The re-encoded video still goes out of sync.</p>
+
+<p>The solution to this is to re-encode the audio with FFmpeg with</p>
+
+<div>
+  <pre><code class='bash'>ffmpeg -i input.mov -vcodec copy -acodec libmp3lame output.mov</code></pre>
+</div>
+
+
+<p>Now, output.mov can be viewed by Quick Time and works fine on Windows Media Player.
+Then, I tried uploading the output.mov via Movideo&rsquo;s Admin interface and the video doesn&rsquo;t go out of sync anymore.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Generating JSPs With BatchJHaml]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml/"/>
+    <updated>2011-07-10T00:00:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/07/10/generating-jsp-with-batchjhaml</id>
+    <content type="html"><![CDATA[<p>Last year, I was assigned to build a web app using <a href="http://struts.apache.org/">Struts</a>.
+I wanted a Haml interpreter and found <a href="https://github.com/raymyers/JHaml">JHaml</a>.
+The problem is it only converts Haml strings to HTML. I need something to convert .haml files to .html or .jsp files.
+Why should you use Haml? See <a href="http://haml-lang.com/">here</a>.</p>
+
+<p>Due to this limitation, I created <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a>.
+If you&rsquo;re using BatchJHaml as a standalone app, it&rsquo;s pretty straight forward.
+But what if you want to include BatchJHaml into your Ant build script?
+Here&rsquo;s what you need to do.</p>
+
+<p>1.) Run <code>git clone git@github.com:pugnusferreus/batchjhaml.git</code> in your terminal</p>
+
+<p>2.) cd to BatchJHaml</p>
+
+<p>3.) Run <code>ant</code> and <code>BatchJHaml.jar</code> will appear in the <code>dist</code> directory.</p>
+
+<p>4.) Copy and paste <code>BatchJHaml.jar</code> in your local lib directory.</p>
+
+<p>5.) Copy the following into your local lib directory as well. You can find them in the <code>BatchJHaml/lib</code> folder.
+If you already have the following, you can ommit this step.
+If you have a later version of the following jars, you can use them as well.</p>
+
+<ul>
+<li><p>commons-io-1.4.jar</p></li>
+<li><p>commons-lang-2.5.jar</p></li>
+<li><p>guava-r06.jar</p></li>
+<li><p>jhaml-0.1.2.jar</p></li>
+<li><p>markdownj-1.0.2b4-0.3.0.jar</p></li>
+</ul>
+
+
+<p>6.) Copy the following build target into your build.xml</p>
+
+<div>
+  <pre><code class='xml'>&lt;target name=&quot;compile-haml&quot;&gt;
+  &lt;echo message=&quot;Converting haml files into jsp ...&quot; /&gt;
+  &lt;java fork=&quot;true&quot; classname=&quot;com.progriff.jhaml.BatchJHaml&quot;&gt;
+    &lt;classpath&gt;
+      &lt;fileset dir=&quot;${library.home}&quot;&gt;
+        &lt;include name=&quot;**/commons-io-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/commons-lang-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/guava-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/jhaml-*.jar&quot; /&gt;
+        &lt;include name=&quot;**/markdownj-*.jar&quot; /&gt;
+      &lt;/fileset&gt;
+      &lt;path location=&quot;${library.home}/BatchJHaml.jar&quot;/&gt;
+    &lt;/classpath&gt;
+    &lt;arg value=&quot;~/YourProject/haml&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/haml/layouts&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/jsp&quot;/&gt;
+    &lt;arg value=&quot;jsp&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/javascripts&quot;/&gt;
+    &lt;arg value=&quot;~/YourProject/stylesheets&quot;/&gt;
+  &lt;/java&gt;
+&lt;/target&gt;</code></pre>
+</div>
+
+
+<p>7.) In your <code>build</code> target, add <code>compile-haml</code> to your <code>depends</code>. Example:</p>
+
+<div>
+  <pre><code class='xml'>&lt;target name=&quot;build&quot; depends=&quot;clean, prepare,compile, compile-haml&quot;&gt;</code></pre>
+</div>
+
+
+<p>And enjoy your Haml.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Modernizing Lunchpicker Part 2]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2/"/>
+    <updated>2011-07-09T00:00:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2</id>
+    <content type="html"><![CDATA[<p>When I wrote lunchpicker, I was obviously not yet enlightened with <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>.
+While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity to learn <a href="http://rspec.info/">RSpec</a>.
+So again, here is my journey with RSpec. Since lunchpicker is a Rails app, I&rsquo;ll be using <a href="http://rspec.info/rails/">rspec-rails</a></p>
+
+<p>1.) Some stuff from the Sass plugin has been deprecated in Rails3.
+Remove the plugin by removing the directory in vendor/plugins and add <code>https://github.com/jasoncodes/hassle.git</code> in your Gemfile.</p>
+
+<p>2.) Move <code>filter_parameter_logging</code> in <code>application_controller.rb</code> to <code>/config/application.rb</code></p>
+
+<p>3.) Remove the test folder because we&rsquo;ll be using Rspec</p>
+
+<p>4.) Add the following lines into your Gemfile. These gems should be loaded in Dev and Testing environments only.</p>
+
+<div>
+  <pre><code class='ruby'>group :development, :test do
+  gem 'rspec-rails'
+  gem 'spork'
+  gem 'awesome_print', :require =&gt; 'ap'
+  gem 'mocha'
+  gem 'shoulda'
+  gem 'vcr'
+  gem 'webmock', :require =&gt; false
+end</code></pre>
+</div>
+
+
+<p>5.) Run <code>bundle install</code> and then run <code>rails g rspec:install</code>.
+This will create the rspec folder and the rake file to create a test database.</p>
+
+<p>6.) The structure of your <code>spec/</code> directory should mirror that of <code>app/</code>.
+For example, the spec file for <code>app/models/location.rb</code> would be <code>spec/models/location_spec.rb</code>.</p>
+
+<p>7.) Create your rspec test! Need example? See <a href="https://github.com/pugnusferreus/lunchpicker/tree/master/spec">here</a>.</p>
+
+<p>8.) Now, in the lunchpicker directory, type <code>bundle exec rspec spec</code>.
+This will run the tests. Since we&rsquo;re testing the controllers and models, rspec would need to bootstrap all the Rails stuff.
+The result? Slowness.</p>
+
+<p>9.) To overcome this, we&rsquo;ll be using spork to bootstrap the Rails libraries.
+Open another terminal window and <code>cd</code> to the lunchpicker folder.
+Type in <code>bundle exec spork rspec</code>.</p>
+
+<p>10.) Open another window and <code>cd</code> into the lunchpicker folder.
+Type in <code>bundle exec rspec --drb spec</code>.
+Notice that the tests run faster.
+If you change any Rails related config, remember to restart spork.</p>
+
+<p>What&rsquo;s VCR? VCR records your test suite&rsquo;s HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
+We&rsquo;re interacting with Google Weather which is an external API.</p>
+
+<p>ps. <a href="http://lunch.progriff.com">lunchpicker</a> is now Rails 3</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Modernizing Lunchpicker]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker/"/>
+    <updated>2011-06-26T00:00:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/06/26/modernizing-lunchpicker</id>
+    <content type="html"><![CDATA[<p>Lunchpicker is my first project with Rails. Back then, there was alot of hype regarding Rails and that was why I started Lunchpicker
+to have a taste of Ruby On Rails. Yes, I fell in love with it immediately.</p>
+
+<p>Wife had some plans for the entire afternoon and I&rsquo;ve decided to dedicate my entire Saturday afternoon on migrating Lunchpicker from Rails 2 to Rails 3.
+Here&rsquo;s a blog post on my adventure. Thanks <a href="http://twitter.com/#!/jasoncodes">@jasoncodes</a> for helping!</p>
+
+<p>1 . Install <a href="https://rvm.beginrescueend.com/">RVM</a>.
+RVM allows you to install, manage and work with multiple ruby environments.
+For example, you can have project A running in Ruby 1.8.x and project B running in Ruby 1.9.x</p>
+
+<p>2 . For lunchpicker, here is my .rvmrc file</p>
+
+<pre><code>&lt;div&gt;
+</code></pre>
+
+<p>  <pre><code class='bash'>$ cat .rvmrc</p>
+
+<pre><code>rvm --create 1.9.2@lunchpicker&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+
+<p></div></p>
+
+<p>3 . Now, we need to intall Bundler.
+Bundler manages your application&rsquo;s dependencies via Gemfile.
+Here&rsquo;s a sample of lunchpicker&rsquo;s Gemfile</p>
+
+<div>
+  <pre><code class='ruby'>source 'http://rubygems.org'
+
+gem 'rails', '3.0.9'
+gem 'google_weather', :git =&gt; 'http://github.com/Ennova/google-weather.git'
+gem 'informal'
+gem 'haml'
+gem 'httparty'
+gem 'authlogic', :git =&gt; 'http://github.com/radar/authlogic.git'
+gem 'pg', :require =&gt; 'pg'
+gem 'sass'
+gem 'dynamic_form'</code></pre>
+</div>
+
+
+<p>4 . After creating a Gemfile, run <code>gem install bundler</code> and then run <code>bundle intall</code> to install all the dependencies in your rvm.</p>
+
+<p>5 . Go into the lunchpicker directory and run <code>rails new .</code>.
+It&rsquo;ll obviously overwrite your old configurations with Rails 3&rsquo;s. Replace all the files.</p>
+
+<p>6 . Do a diff and merge all your codes (controllers, models, js, css, haml etc.)</p>
+
+<p>7 . Remove config/initializers/new_rails_defaults.rb</p>
+
+<p>8 . Remove scaffold related html from the <code>public</code> folder</p>
+
+<p>9 . In your helpers, mark your HTML fragements as safe. For example you should change</p>
+
+<div>
+  <pre><code class='ruby'>return &lt;&lt;-HTML
+  &lt;p&gt;
+    blah
+  &lt;/p&gt;
+HTML</code></pre>
+</div>
+
+
+<p>to</p>
+
+<div>
+  <pre><code class='ruby'>return &lt;&lt;-HTML.html_safe
+  &lt;p&gt;
+    blah
+  &lt;/p&gt;
+HTML</code></pre>
+</div>
+
+
+<p>10 . If you have a non ActiveRecord model, and if you&rsquo;re using Validatable, change it to <a href="https://github.com/joshsusser/informal">Informal<a/>.
+For Lunchpicker, search.rb is not an ActiveRecord model.
+Also, we need to change</p>
+
+<div>
+  <pre><code class='ruby'>validates_presence_of :sheltered</code></pre>
+</div>
+
+
+<p>to</p>
+
+<div>
+  <pre><code class='ruby'>validates_inclusion_of :sheltered, :in =&gt; [true, false]</code></pre>
+</div>
+
+
+<p>We&rsquo;re using validate inclusion rather than presence for booleans. This is due to the way Object#blank? handles boolean values. false.blank? # => true</p>
+
+<p>11 . Add the following lines to config/application.rb. This will prefix the tablename infront of the PK. eg. venue_id</p>
+
+<div>
+  <pre><code class='ruby'>config.active_record.primary_key_prefix_type = :table_name_with_underscore
+config.active_record.schema_format = :sql</code></pre>
+</div>
+
+
+<p>12 . default.html.haml has been changed to application.html.haml in Rails 3.
+Run <code>git mv default.html.haml application.html.haml</code> and don&rsquo;t forget to remove the application.html.erb as well.</p>
+
+<p>13 . Switch rails.js from Prototype to jQuery. Remove controls.js, dragdrop.js, effect.js and prototype.js. Please see
+<a href="https://github.com/pugnusferreus/lunchpicker/blob/0e278acf24d1764d03c8ededa02e364da7c1c409/public/javascripts/rails.js">rails.js</a>.</p>
+
+<p>14 . Add rails.js in the application.html.haml for Unobtrusive Javascript support.</p>
+
+<div>
+  <pre><code class='ruby'>= javascript_include_tag 'rails'</code></pre>
+</div>
+
+
+<p>15 . If you run <code>rake db:migrate</code> before step 11, run <code>rake db:reset</code> and then <code>rake db:migrate</code> again.</p>
+
+<p>I hope that this will be useful to you if you need to migrate any old Rails 2 application to Rails 3.
+I&rsquo;ll use this opportunity to add unit test with RSpec.</p>
+
+<p>The Rails 3 version of lunch picker won&rsquo;t be in production till unit test is done!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Mocking with Mockito]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito/"/>
+    <updated>2011-06-18T00:00:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito</id>
+    <content type="html"><![CDATA[<p>At movideo, we&rsquo;re using <a href="http://mockito.org/">Mockito</a> as our mocking framework.
+Mockito provides a clean and simple API to mock your Java objects.</p>
+
+<p>Let&rsquo;s say Class1 has a couple of arguments for it&rsquo;s constructor and you do not want to provide each arguments,
+you can simply do:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import static org.mockito.Mockito.mock;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then, you do</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>Class1 class1 = mock(Class1.class);</span></code></pre></td></tr></table></div></figure>
+
+
+<p>If you want to mock a certain method call in class1, do the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>import static org.mockito.Mockito.when;
+</span><span class='line'>import static org.junit.Assert.assertEquals;</span></code></pre></td></tr></table></div></figure>
+
+
+<p>then, you do</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>when(class1.methodReturnsString()).thenReturn("foo");
+</span><span class='line'>assertEquals("foo", class2.callClass1Method());</span></code></pre></td></tr></table></div></figure>
+
+
+<p>Assuming that <code>class2.callClass1Method()</code> will call
+<code>class1.methodReturnsString()</code>
+the assertion will be successful.</p>
+
+<p>To get a better picture of what Mockito can do for you, you can checkout my Mockito Test project
+from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Project</a>.</p>
+
+<p>I&rsquo;ll assume that you have Git, Java 1.6 and Ant installed on your machine.</p>
+
+<ol>
+<li><code>git clone https://github.com/pugnusferreus/mockito_test</code></li>
+<li><code>cd mockito_test</code></li>
+<li><code>ant</code></li>
+<li>Open docs/unitTest/index.html in your browser</li>
+</ol>
+
+
+<p>You can see that all the unit tests pass.</p>
+
+<p>Thanks <a href="http://twitter.com/#!/cstrzadala">@cstrzadala</a> for introducing Mockito to all of us!</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Unit Test Your Java DAO With Hibernate And HSQL DB]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/06/05/unit-test-your-java-dao-with-hibernate-and-hsql/"/>
+    <updated>2011-06-05T00:00:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/06/05/unit-test-your-java-dao-with-hibernate-and-hsql</id>
+    <content type="html"><![CDATA[<p>Unlike Rails which allow you to do unit test on your models, there&rsquo;s no easy way to actually unit test your Java DAO.
+Sometimes, we do not have access to the development database or we do not want to polute the development database with our data.</p>
+
+<p>Sure, we could run a local db on our machine.
+What happen if it&rsquo;s a huge RDBMS like Oracle or DB2?
+Yes, the previous sentence sounds enterprisey but as a Java developer, you can&rsquo;t get away with enterprisey things.</p>
+
+<p>Take a look at this sample <a href="https://github.com/pugnusferreus/dao_unit_test">project</a>.
+Assuming that your current project is using Hibernate as your ORM, you can use <a href="http://hsqldb.org/">HSQL DB</a> to load up a &ldquo;in memory&rdquo; database for your unit test.
+Hibernate and hsql will automatically creates the table for you.</p>
+
+<p>Here&rsquo;s how. I&rsquo;ll assume that you have Git, Java 1.6 (or whatever it&rsquo;s called now) and Ant installed on your machine.</p>
+
+<ol>
+<li><code>git clone https://github.com/pugnusferreus/dao_unit_test</code></li>
+<li><code>cd dao_unit_test</code></li>
+<li><code>ant</code></li>
+<li>Open docs/unitTest/index.html in your browser</li>
+</ol>
+
+
+<p>You can see that all the unit tests pass.</p>
+
+<p>Make sure that your hibernate config points to the HSQL DB and your model is mapped.
+Open up &ldquo;com.progriff.dao.UserDaoTest&rdquo; and you can see that it&rsquo;s your typical Java Unit Test</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Things to do before you start programming]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/05/23/things-to-do-before-you-start-programming/"/>
+    <updated>2011-05-23T00:00:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/05/23/things-to-do-before-you-start-programming</id>
+    <content type="html"><![CDATA[<p>I&rsquo;ve been reading <a href="http://pragprog.com/titles/ahptl/pragmatic-thinking-and-learning">Pragmatic Thinking &amp; Learning</a> by Andy Hunt.
+In one of the chapters, the author talks about UML. Yes, even I myself find that UML can get a bit boring. He suggests that I literally draw out
+the diagram. And so I did. The author also suggests that you can do the same with Lego bricks or by role playing, but I won&rsquo;t go into that.</p>
+
+<p>At <a href="http://www.movideo.com">movideo</a>, I&rsquo;ve been assigned to make a program that runs on the server and upload videos to YouTube. In the future
+we might externally syndicate our videos to another provider (eg. Vimeo). So, I come up with
+<a href="http://pugnusferreus.github.io/images/external_syndication.png">this</a> diagram to see how it can aid me with my software development process.</p>
+
+<p>This diagram actually helped me by:</p>
+
+<ul>
+<li><p>Acting as a check list</p></li>
+<li><p>Making Test-driven Development(TDD) easier. Why? By looking at this diagram, you&rsquo;ll be able to see the hollistic picture. By having a hollistic picture of the entire application that you&rsquo;re about to write, it&rsquo;s easier for you to write unit test for it&rsquo;s expected behaviour</p></li>
+<li><p>Writing pseudo codes. I don&rsquo;t actually write pseudocode à la COBOL era, but for every function that I write, I&rsquo;ll write comments of the things that I need to do.For example:
+<div>
+<pre><code class='java'>public void create()
+{
+  // do validation</p>
+
+<p>  // check if record exists</p>
+
+<p>  // save to database <br/>
+}</code></pre>
+</div></p></li>
+</ul>
+
+
+<p>Most importantly, before you start scribbling, get away from your computer. Computers can be distracting at times (emails, IM, Twitter). You&rsquo;ll be able to see a hollistic view without those distractions.</p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[How to install jekyll]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2011/05/18/how-to-install-jekyll/"/>
+    <updated>2011-05-18T00:00:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2011/05/18/how-to-install-jekyll</id>
+    <content type="html"><![CDATA[<p>This is my first blog post entry for progriff.com. Since this blog was made with <a href="https://github.com/mojombo/jekyll">Jekyll</a>, I&rsquo;ll walk you through how to setup a basic blog with Jekyll. Why Jekyll? Here are a couple of points I could think of :</p>
+
+<ul>
+<li>It generates static pages for you.</li>
+<li>You do not need a database in your server</li>
+<li>You do not need a webserver (Apache, IIS, etc &hellip;)</li>
+<li>Without all those mumbo jumbo on your server, your server will be more secure</li>
+</ul>
+
+
+<p>Here&rsquo;s how:</p>
+
+<p>1 . First, install Jekyll</p>
+
+<pre><code>&lt;div&gt;
+</code></pre>
+
+<p>  <pre><code class='bash'>$ sudo gem install jekyll</code></pre>
+</div></p>
+
+<p>2 . Then install rdiscount</p>
+
+<pre><code>&lt;div&gt;
+</code></pre>
+
+<p>  <pre><code class='bash'>$ sudo gem install rdiscount</code></pre>
+</div></p>
+
+<p>3 . Make a directory. Let&rsquo;s call it blog.</p>
+
+<pre><code>&lt;div&gt;
+</code></pre>
+
+<p>  <pre><code class='bash'>$ mkdir blog</p>
+
+<pre><code>$ cd blog&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+
+<p></div></p>
+
+<p>4 . Create the directory structure as of below.</p>
+
+<pre class="text">
+      blog
+        |-- _layouts
+                `-- default.html
+                `-- post.html
+        |-- _posts
+           `-- 2011-05-18-foo-bar.md
+        |-- _site
+        |-- css
+        `-- index.html
+        `-- _config.yml
+    
+</pre>
+
+
+<p>5 . This is optional. If you need code syntax highlighting, you&rsquo;ll need Pygment.</p>
+
+<pre><code>&lt;div&gt;
+</code></pre>
+
+<p>  <pre><code class='bash'>$ sudo easy_install Pygments</p>
+
+<pre><code>$ pygmentize -S default -f html &amp;gt; /path/to/your/blog/css/pygment.css&lt;/code&gt;&lt;/pre&gt;
+</code></pre>
+
+<p></div></p>
+
+<p>6 . Take a look at the <a href="https://github.com/pugnusferreus/progriff_blog">source</a> for this blog and copy whatever you need.</p>
+
+<p>7 . After you&rsquo;re done, you want to preview your blog. In your terminal, type</p>
+
+<pre><code>&lt;div&gt;
+</code></pre>
+
+<p>  <pre><code class='bash'>$ jekyll &mdash;server &mdash;auto</code></pre>
+</div></p>
+
+<p>8 . Go to your browser and go to &ldquo;<a href="http://localhost:4000">http://localhost:4000</a>&rdquo;</p>
+
+<p>9 . If you need to compile the pages without starting the server, just type &ldquo;jekyll&rdquo;</p>
+]]></content>
+  </entry>
+  
+</feed>

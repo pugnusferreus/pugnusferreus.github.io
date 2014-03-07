@@ -1,0 +1,266 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Resin 3.1 and Azure SDK for Java - Benson's Programming Journey</title>
+  <meta name="author" content="Benson Lim">
+
+  
+  <meta name="description" content="I was writing a REST service that will send a Cloud Queue Message to Azure.
+After testing my utility class with JUnit, it passed.
+However, when I &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><img src="/favicon.png" alt="Progriff icon"/> <a href="/">Benson's Programming Journey</a></span>
+    <br/>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/pugnusferreus">github</a></span>
+    <span><a href="https://twitter.com/pugnusferreus" title="twitter">twitter</a></span>
+    <span><a href="http://www.flickr.com/photos/95990368@N08/" title="twitter">flickr</a></span>
+    <span><a href="https://soundcloud.com/benson-cs-lim" title="twitter">soundcloud</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Resin 3.1 and Azure SDK for Java</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-08T00:00:00+11:00" pubdate data-updated="true">Feb 8<span>th</span>, 2012</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>I was writing a REST service that will send a Cloud Queue Message to Azure.
+After testing my utility class with JUnit, it passed.
+However, when I tried to send a Cloud Queue Message via REST service (hosted in Resin 3.1), I got the following error:</p>
+
+<div>
+  <pre><code class='java'>java.lang.IllegalArgumentException: property 
+  &quot;javax.xml.stream.isReplacingEntityReferences&quot; not supported
+at com.caucho.xml.stream.XMLInputFactoryImpl.setProperty
+  (XMLInputFactoryImpl.java:265)
+at com.microsoft.windowsazure.services.core.storage.utils
+  .Utility.createXMLStreamReaderFromStream(Utility.java:321)</code></pre>
+</div>
+
+
+<p>Resin Web Server uses it&rsquo;s own <code>XMLInputFactory</code> implementation called <code>com.caucho.xml.stream.XMLInputFactoryImpl</code>.
+According to this <a href="http://www.caucho.com/resin-3.1/doc/jaxp.xtp">article</a>, you can override the
+implementation by having <code>&lt;system-property/&gt;</code> following in your <code>resin.conf</code>.
+Put the following to use the JDK&rsquo;s version of XMLInputFactoryImpl</p>
+
+<div>
+  <pre><code class='xml'>&lt;system-property javax.xml.stream.XMLInputFactory=
+  &quot;com.sun.xml.internal.stream.XMLInputFactoryImpl&quot; /&gt;</code></pre>
+</div>
+
+
+<p>Problem solved? Not really. Tried running the REST service again and I got the following:</p>
+
+<div>
+  <pre><code class='java'>com.microsoft.windowsazure.services.core.storage.StorageException: 
+  XML specified is not syntactically valid.</code></pre>
+</div>
+
+
+<p>After looking at the Azure SDK for Java&rsquo;s <a href="https://github.com/WindowsAzure/azure-sdk-for-java">source</a>,
+I&rsquo;ve found out that the XMLOutputFactory and XMLStreamWriter was unable to generate the XML request body in
+<code>com.microsoft.windowsazure.services.queue.client
+  .QueueRequest.generateMessageRequestBody</code></p>
+
+<p>Why? If you do a simple system out on the class name, resin is using it&rsquo;s own implementation
+for XMLOutputFactory and XMLStreamWriter.
+So add the following as well into your resin.conf</p>
+
+<div>
+  <pre><code class='xml'>&lt;system-property javax.xml.stream.XMLOutputFactory=
+  &quot;com.sun.xml.internal.stream.XMLOutputFactoryImpl&quot; /&gt;
+&lt;system-property javax.xml.stream.XMLStreamWriter=
+  &quot;com.sun.xml.internal.stream.writers.XMLStreamWriterImpl&quot; /&gt;</code></pre>
+</div>
+
+
+<p>tl;dr? Add the following in your resin.conf</p>
+
+<div>
+  <pre><code class='xml'>&lt;system-property javax.xml.stream.XMLInputFactory=
+  &quot;com.sun.xml.internal.stream.XMLInputFactoryImpl&quot; /&gt;
+&lt;system-property javax.xml.stream.XMLOutputFactory=
+  &quot;com.sun.xml.internal.stream.XMLOutputFactoryImpl&quot; /&gt;
+&lt;system-property javax.xml.stream.XMLStreamWriter=
+  &quot;com.sun.xml.internal.stream.writers.XMLStreamWriterImpl&quot; /&gt;</code></pre>
+</div>
+
+
+<p>After that, my code works perfectly. I&rsquo;m sure there are other weird problems as well,
+I&rsquo;ll keep you posted if I&rsquo;ve found anymore weird stuff.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Benson Lim</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2012-02-08T00:00:00+11:00" pubdate data-updated="true">Feb 8<span>th</span>, 2012</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2012/02/08/resin-azure-sdk-for-java/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2012/01/06/hibernate-wont-update/" title="Previous Post: Hibernate won't update my object!">&laquo; Hibernate won't update my object!</a>
+      
+      
+        <a class="basic-alignment right" href="/blog/2012/02/14/batchjhaml-update/" title="Next Post: BatchJHaml Update">BatchJHaml Update &raquo;</a>
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2013/08/21/always-flush-your-python-file-object/">Always Flush Your Python File Object</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/08/21/convert-your-python-script-into-a-windows-executable/">Convert Your Python Script Into a Windows Executable</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/07/03/create-a-hls4-with-aes-stream/">Create a HLS4 With AES Stream</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2013/06/29/moved-to-github-pages-and-octopress/">Moved to Github Pages and Octopress</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2012/02/14/batchjhaml-update/">BatchJHaml Update</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  
+  <p>
+  Copyright &copy; 2013 - Benson Lim -
+</p>
+
+
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>
