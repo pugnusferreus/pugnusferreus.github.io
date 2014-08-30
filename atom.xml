@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2013-08-21T15:30:37+10:00</updated>
+  <updated>2014-08-30T16:32:55+10:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,104 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Scaling a video with FFmpeg]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2014/08/30/scaling-a-video-with-ffmpeg/"/>
+    <updated>2014-08-30T16:06:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2014/08/30/scaling-a-video-with-ffmpeg</id>
+    <content type="html"><![CDATA[<p>When I started out at Movideo, our platform only supports 16:9 and 4:3 videos. As Movideo grows, I realized that the bigger studios doesn&rsquo;t necessarily deals with 16:9 and 4:3 anymore. Obviously, resizing a mezzanine video with the <code>-s</code> command doesn&rsquo;t work anymore because you might end up with stretchy videos.</p>
+
+<p>A few weeks back I&rsquo;ve been tasked to make some changes so that FFmpeg will scale the video based on height. For example, if a video is 640x360, and the given height to encode is 720, the output video should be 1280x720.</p>
+
+<p>After doing some research, I found a <a href="http://stackoverflow.com/questions/8218363/maintaining-ffmpeg-aspect-ratio">StackOverflow post</a> with the solution. The answer was to use FFmpeg&rsquo;s video filter <code>-vf scale=-1:360</code>. That only works when the scaled width is an even number. If the scaled width is an odd number, you&rsquo;ll get the following error <code>height not divisible by 2</code>.</p>
+
+<p>The same post also states that to scale the height based on the width, you&rsquo;ll need to do <code>scale=640:trunc(ow/a/2)*2</code> to prevent the <code>height not divisible by 2</code> error. So if you need to scale by height, the command would be</p>
+
+<p><code>-vf scale=trunc(oh*a/2)*2:720</code></p>
+
+<p>Unfortunately, we&rsquo;re also using FFmpeg to do watermarking on videos and you cannot have 2 video filter command in FFmpeg. Luckily, you can merge both the video filter command into one video filter command by doing the following:</p>
+
+<p><code>-vf "movie=watermark.png [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 scale=trunc(oh*a/2)*2:720 [out]"</code></p>
+]]></content>
+  </entry>
+  
+  <entry>
+    <title type="html"><![CDATA[Installing Protocol Buffer 2.4.1 on Mavericks]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2014/03/08/installing-protocol-buffer-2-dot-4-1-on-mavericks/"/>
+    <updated>2014-03-08T09:47:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2014/03/08/installing-protocol-buffer-2-dot-4-1-on-mavericks</id>
+    <content type="html"><![CDATA[<p>Sure, you can install the latest protocol buffer via <a href="http://brew.sh/">Brew</a>,
+but what happens when your entire organization is still stuck on protocol buffer 2.4.1?</p>
+
+<p>Like me, if you tried to install protocol buffer 2.4.1 on OS X Mavericks, you&rsquo;ll get a compilation error.
+This is how I fixed it.</p>
+
+<p>1 .  Open terminal.app and run <code>brew update</code></p>
+
+<p>2 .  Get the hash for ProtoBuf 2.4.1 by running <code>brew versions protobuf</code></p>
+
+<p>3 .  Run cd &#96;brew &mdash;prefix&#96;</p>
+
+<p>4 .  Get the 2.4.1 brew installation script by running <code>git checkout $hash_shown_in_step2 Library/Formula/protobuf.rb</code></p>
+
+<p>5 .  Attempt to install protobuf 2.4.1 by running <code>brew install protobuf</code> and you&rsquo;ll get the error like the following:</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>make[1]: *** [all-recursive] Error 1
+</span><span class='line'>make: *** [all] Error 2
+</span><span class='line'>
+</span><span class='line'>READ THIS: https://github.com/Homebrew/homebrew/wiki/troubleshooting</span></code></pre></td></tr></table></div></figure>
+
+
+<p>6 .  Go to HomeBrew&rsquo;s source directory folder by running <code>cd /Library/Caches/Homebrew</code></p>
+
+<p>7 .  Unzip protobuf-2.4.1.tar.bz2</p>
+
+<p>8 .  Open src/google/protobuf/message.h</p>
+
+<p>9 .  Go to line 115 and change</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#ifdef __DECCXX
+</span><span class='line'>// HP C++'s iosfwd doesn't work.
+</span><span class='line'>#include &lt;iostream&gt;
+</span><span class='line'>#else
+</span><span class='line'>#include &lt;iosfwd&gt;
+</span><span class='line'>#endif</span></code></pre></td></tr></table></div></figure>
+
+
+<p>To</p>
+
+<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
+<span class='line-number'>2</span>
+<span class='line-number'>3</span>
+<span class='line-number'>4</span>
+<span class='line-number'>5</span>
+<span class='line-number'>6</span>
+</pre></td><td class='code'><pre><code class=''><span class='line'>#ifdef __DECCXX
+</span><span class='line'>// HP C++'s iosfwd doesn't work.
+</span><span class='line'>#include &lt;iostream&gt;
+</span><span class='line'>#else
+</span><span class='line'>#include &lt;sstream&gt;
+</span><span class='line'>#endif </span></code></pre></td></tr></table></div></figure>
+
+
+<p>10 .  In the protobuf directory, run  <code>tar -cvjf protobuf-2.4.1.tar.bz2 .</code></p>
+
+<p>11 .  Obviously after modifying the code, the SHA sum will be different now. Get the new SHA sum by running <code>shasum protobuf-2.4.1.tar.bz2</code> abd then run <code>brew edit protobuf</code> and change the SHA1 with the new SHA sum</p>
+
+<p>12 .  Finally run <code>brew install protobuf</code> again and enjoy your Protocol Buffer 2.4.1</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Always flush your Python file object]]></title>
