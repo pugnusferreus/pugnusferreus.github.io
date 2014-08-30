@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2014-03-08T10:13:09+11:00</updated>
+  <updated>2014-08-30T16:32:55+10:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,27 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Scaling a video with FFmpeg]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2014/08/30/scaling-a-video-with-ffmpeg/"/>
+    <updated>2014-08-30T16:06:00+10:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2014/08/30/scaling-a-video-with-ffmpeg</id>
+    <content type="html"><![CDATA[<p>When I started out at Movideo, our platform only supports 16:9 and 4:3 videos. As Movideo grows, I realized that the bigger studios doesn&rsquo;t necessarily deals with 16:9 and 4:3 anymore. Obviously, resizing a mezzanine video with the <code>-s</code> command doesn&rsquo;t work anymore because you might end up with stretchy videos.</p>
+
+<p>A few weeks back I&rsquo;ve been tasked to make some changes so that FFmpeg will scale the video based on height. For example, if a video is 640x360, and the given height to encode is 720, the output video should be 1280x720.</p>
+
+<p>After doing some research, I found a <a href="http://stackoverflow.com/questions/8218363/maintaining-ffmpeg-aspect-ratio">StackOverflow post</a> with the solution. The answer was to use FFmpeg&rsquo;s video filter <code>-vf scale=-1:360</code>. That only works when the scaled width is an even number. If the scaled width is an odd number, you&rsquo;ll get the following error <code>height not divisible by 2</code>.</p>
+
+<p>The same post also states that to scale the height based on the width, you&rsquo;ll need to do <code>scale=640:trunc(ow/a/2)*2</code> to prevent the <code>height not divisible by 2</code> error. So if you need to scale by height, the command would be</p>
+
+<p><code>-vf scale=trunc(oh*a/2)*2:720</code></p>
+
+<p>Unfortunately, we&rsquo;re also using FFmpeg to do watermarking on videos and you cannot have 2 video filter command in FFmpeg. Luckily, you can merge both the video filter command into one video filter command by doing the following:</p>
+
+<p><code>-vf "movie=watermark.png [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 scale=trunc(oh*a/2)*2:720 [out]"</code></p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Installing Protocol Buffer 2.4.1 on Mavericks]]></title>

@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Mocking with Mockito - Benson's Programming Journey</title>
+  <title>Scaling a video with FFmpeg - Benson's Programming Journey</title>
   <meta name="author" content="Benson Lim">
 
   
-  <meta name="description" content="At movideo, we&rsquo;re using Mockito as our mocking framework.
-Mockito provides a clean and simple API to mock your Java objects. Let&rsquo;s say &hellip;">
+  <meta name="description" content="When I started out at Movideo, our platform only supports 16:9 and 4:3 videos. As Movideo grows, I realized that the bigger studios doesn&rsquo;t &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ Mockito provides a clean and simple API to mock your Java objects. Let&rsquo;s s
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito">
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2014/08/30/scaling-a-video-with-ffmpeg">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
@@ -57,7 +56,7 @@ Mockito provides a clean and simple API to mock your Java objects. Let&rsquo;s s
   
   <header>
     
-      <h1 class="entry-title">Mocking With Mockito</h1>
+      <h1 class="entry-title">Scaling a Video With FFmpeg</h1>
     
     
       <p class="meta">
@@ -73,65 +72,26 @@ Mockito provides a clean and simple API to mock your Java objects. Let&rsquo;s s
   
 
 
-<time datetime="2011-06-18T00:00:00+10:00" pubdate data-updated="true">Jun 18<span>th</span>, 2011</time>
+<time datetime="2014-08-30T16:06:00+10:00" pubdate data-updated="true">Aug 30<span>th</span>, 2014</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>At movideo, we&rsquo;re using <a href="http://mockito.org/">Mockito</a> as our mocking framework.
-Mockito provides a clean and simple API to mock your Java objects.</p>
+<div class="entry-content"><p>When I started out at Movideo, our platform only supports 16:9 and 4:3 videos. As Movideo grows, I realized that the bigger studios doesn&rsquo;t necessarily deals with 16:9 and 4:3 anymore. Obviously, resizing a mezzanine video with the <code>-s</code> command doesn&rsquo;t work anymore because you might end up with stretchy videos.</p>
 
-<p>Let&rsquo;s say Class1 has a couple of arguments for it&rsquo;s constructor and you do not want to provide each arguments,
-you can simply do:</p>
+<p>A few weeks back I&rsquo;ve been tasked to make some changes so that FFmpeg will scale the video based on height. For example, if a video is 640x360, and the given height to encode is 720, the output video should be 1280x720.</p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>import static org.mockito.Mockito.mock;</span></code></pre></td></tr></table></div></figure>
+<p>After doing some research, I found a <a href="http://stackoverflow.com/questions/8218363/maintaining-ffmpeg-aspect-ratio">StackOverflow post</a> with the solution. The answer was to use FFmpeg&rsquo;s video filter <code>-vf scale=-1:360</code>. That only works when the scaled width is an even number. If the scaled width is an odd number, you&rsquo;ll get the following error <code>height not divisible by 2</code>.</p>
 
+<p>The same post also states that to scale the height based on the width, you&rsquo;ll need to do <code>scale=640:trunc(ow/a/2)*2</code> to prevent the <code>height not divisible by 2</code> error. So if you need to scale by height, the command would be</p>
 
-<p>then, you do</p>
+<p><code>-vf scale=trunc(oh*a/2)*2:720</code></p>
 
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>Class1 class1 = mock(Class1.class);</span></code></pre></td></tr></table></div></figure>
+<p>Unfortunately, we&rsquo;re also using FFmpeg to do watermarking on videos and you cannot have 2 video filter command in FFmpeg. Luckily, you can merge both the video filter command into one video filter command by doing the following:</p>
 
-
-<p>If you want to mock a certain method call in class1, do the following:</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>import static org.mockito.Mockito.when;
-</span><span class='line'>import static org.junit.Assert.assertEquals;</span></code></pre></td></tr></table></div></figure>
-
-
-<p>then, you do</p>
-
-<figure class='code'><div class="highlight"><table><tr><td class="gutter"><pre class="line-numbers"><span class='line-number'>1</span>
-<span class='line-number'>2</span>
-</pre></td><td class='code'><pre><code class=''><span class='line'>when(class1.methodReturnsString()).thenReturn("foo");
-</span><span class='line'>assertEquals("foo", class2.callClass1Method());</span></code></pre></td></tr></table></div></figure>
-
-
-<p>Assuming that <code>class2.callClass1Method()</code> will call
-<code>class1.methodReturnsString()</code>
-the assertion will be successful.</p>
-
-<p>To get a better picture of what Mockito can do for you, you can checkout my Mockito Test project
-from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Project</a>.</p>
-
-<p>I&rsquo;ll assume that you have Git, Java 1.6 and Ant installed on your machine.</p>
-
-<ol>
-<li><code>git clone https://github.com/pugnusferreus/mockito_test</code></li>
-<li><code>cd mockito_test</code></li>
-<li><code>ant</code></li>
-<li>Open docs/unitTest/index.html in your browser</li>
-</ol>
-
-
-<p>You can see that all the unit tests pass.</p>
-
-<p>Thanks <a href="http://twitter.com/#!/cstrzadala">@cstrzadala</a> for introducing Mockito to all of us!</p>
+<p><code>-vf "movie=watermark.png [watermark]; [in][watermark] overlay=10:main_h-overlay_h-10 scale=trunc(oh*a/2)*2:720 [out]"</code></p>
 </div>
 
 
@@ -154,7 +114,7 @@ from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Pr
   
 
 
-<time datetime="2011-06-18T00:00:00+10:00" pubdate data-updated="true">Jun 18<span>th</span>, 2011</time>
+<time datetime="2014-08-30T16:06:00+10:00" pubdate data-updated="true">Aug 30<span>th</span>, 2014</time>
       
 
 
@@ -162,7 +122,7 @@ from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Pr
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2011/06/18/mocking-with-mockito/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2014/08/30/scaling-a-video-with-ffmpeg/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2014/08/30/scaling-a-video-with-ffmpeg/" >Tweet</a>
   
   
   
@@ -171,10 +131,8 @@ from my <a href="https://github.com/pugnusferreus/mockito_test">Github Sample Pr
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/06/05/unit-test-your-java-dao-with-hibernate-and-hsql/" title="Previous Post: Unit Test Your Java DAO With Hibernate And HSQL DB">&laquo; Unit Test Your Java DAO With Hibernate And HSQL DB</a>
+        <a class="basic-alignment left" href="/blog/2014/03/08/installing-protocol-buffer-2-dot-4-1-on-mavericks/" title="Previous Post: Installing Protocol Buffer 2.4.1 on Mavericks">&laquo; Installing Protocol Buffer 2.4.1 on Mavericks</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2011/06/26/modernizing-lunchpicker/" title="Next Post: Modernizing Lunchpicker">Modernizing Lunchpicker &raquo;</a>
       
     </p>
   </footer>
