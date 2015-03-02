@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2014-08-30T16:32:55+10:00</updated>
+  <updated>2015-03-02T22:25:55+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,41 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Creating a REST application with Spring 4]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2015/03/02/creating-a-rest-application-with-spring-4/"/>
+    <updated>2015-03-02T19:00:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2015/03/02/creating-a-rest-application-with-spring-4</id>
+    <content type="html"><![CDATA[<p>1 . Install <a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html#javasejdk">JDK 7 or higher</a>, <a href="http://maven.apache.org">Maven</a> and <a href="http://git-scm.com">GIT</a></p>
+
+<p>2 . On your terminal, run <code>git clone https://github.com/pugnusferreus/spring-rest.git</code></p>
+
+<p>3 . In the spring-rest folder, run <code>mvn -e  jetty:run -Djetty.port=8080</code></p>
+
+<p>4 . On your browser, go to <code>http://localhost:8080/rest/someEndPoint</code> and you&rsquo;ll get the following response <code>{"key":"Hello from a manager!"}</code>.</p>
+
+<p>I&rsquo;ll not explain step by step on how to wire up all these since there are a dozen of articles on how to wire up a REST application with Spring 4. I&rsquo;ll be highlighting on the things that we should be looking at.</p>
+
+<h2>Configuration</h2>
+
+<p>1 . <code>src/main/webapp/WEB-INF/web.xml</code> basically tells your Java Web App on which spring context it should use and the URL pattern mapping. In this example, we want to configure all our REST calls with /rest/*.</p>
+
+<p>2 . <code>src/main/webapp/WEB-INF/applicationContext.xml</code> and <code>src/main/webapp/WEB-INF/manager-context.xml</code> is where we declare our spring beans. I deliberately separate them up so that manager classes will be declared in the manager-context.xml.</p>
+
+<p>3 . <code>src/main/java/log4j2.xml</code> is where we configure our logging. We&rsquo;re using <a href="http://logging.apache.org/log4j/2.x/">Log4J2</a> in this example. This XML tells LOG4J to log spring-rest.log and to the terminal console.</p>
+
+<p>4 . <code>pom.xml</code> is our Maven build file. <dependencies /> tells Maven what this application&rsquo;s dependencies are so that Maven can fetch them from the Maven repository. <plugins />  is where we configure our Java compilation, WAR file build and Jetty configurations.</p>
+
+<h2>Source</h2>
+
+<p>1 . <code>com.progriff.managers.TestManager</code> is our manager class. We should always put our business logic in a manager class.</p>
+
+<p>2 . <code>com.progriff.controllers.TestController</code> is our controller. Note that there is an <code>@Autowired</code> on top of the TestManager class. Spring will automatically wire up TestManager with TestController. Do note that your variable name must be the same as the bean id in the manager-context.xml file.</p>
+
+<p>3 . In TestController, for each methods that are to be mapped to a URL, we&rsquo;ll need <code>@RequestMapping</code> and <code>@ResponseBody</code>. You can set the REST URL path, Request Method and the Media Type that this REST will produce in the @RequestMapping annotation. Do note that when we return the java.util.Map in that method, Jackson will automatically convert the object into JSON.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Scaling a video with FFmpeg]]></title>

@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>Modernizing Lunchpicker Part 2 - Benson's Programming Journey</title>
+  <title>Creating a REST application with Spring 4 - Benson's Programming Journey</title>
   <meta name="author" content="Benson Lim">
 
   
-  <meta name="description" content="When I wrote lunchpicker, I was obviously not yet enlightened with TDD.
-While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity &hellip;">
+  <meta name="description" content="1 . Install JDK 7 or higher, Maven and GIT 2 . On your terminal, run git clone https://github.com/pugnusferreus/spring-rest.git 3 . In the spring- &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity &hel
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2">
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2015/03/02/creating-a-rest-application-with-spring-4">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
@@ -57,7 +56,7 @@ While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity &hel
   
   <header>
     
-      <h1 class="entry-title">Modernizing Lunchpicker Part 2</h1>
+      <h1 class="entry-title">Creating a REST Application With Spring 4</h1>
     
     
       <p class="meta">
@@ -73,64 +72,40 @@ While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity &hel
   
 
 
-<time datetime="2011-07-09T00:00:00+10:00" pubdate data-updated="true">Jul 9<span>th</span>, 2011</time>
+<time datetime="2015-03-02T19:00:00+11:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>When I wrote lunchpicker, I was obviously not yet enlightened with <a href="http://en.wikipedia.org/wiki/Test-driven_development">TDD</a>.
-While migrating lunchpicker from Rails 2 to Rails 3, I took the opportunity to learn <a href="http://rspec.info/">RSpec</a>.
-So again, here is my journey with RSpec. Since lunchpicker is a Rails app, I&rsquo;ll be using <a href="http://rspec.info/rails/">rspec-rails</a></p>
+<div class="entry-content"><p>1 . Install <a href="http://www.oracle.com/technetwork/java/javase/downloads/index-jsp-138363.html#javasejdk">JDK 7 or higher</a>, <a href="http://maven.apache.org">Maven</a> and <a href="http://git-scm.com">GIT</a></p>
 
-<p>1.) Some stuff from the Sass plugin has been deprecated in Rails3.
-Remove the plugin by removing the directory in vendor/plugins and add <code>https://github.com/jasoncodes/hassle.git</code> in your Gemfile.</p>
+<p>2 . On your terminal, run <code>git clone https://github.com/pugnusferreus/spring-rest.git</code></p>
 
-<p>2.) Move <code>filter_parameter_logging</code> in <code>application_controller.rb</code> to <code>/config/application.rb</code></p>
+<p>3 . In the spring-rest folder, run <code>mvn -e  jetty:run -Djetty.port=8080</code></p>
 
-<p>3.) Remove the test folder because we&rsquo;ll be using Rspec</p>
+<p>4 . On your browser, go to <code>http://localhost:8080/rest/someEndPoint</code> and you&rsquo;ll get the following response <code>{"key":"Hello from a manager!"}</code>.</p>
 
-<p>4.) Add the following lines into your Gemfile. These gems should be loaded in Dev and Testing environments only.</p>
+<p>I&rsquo;ll not explain step by step on how to wire up all these since there are a dozen of articles on how to wire up a REST application with Spring 4. I&rsquo;ll be highlighting on the things that we should be looking at.</p>
 
-<div>
-  <pre><code class='ruby'>group :development, :test do
-  gem 'rspec-rails'
-  gem 'spork'
-  gem 'awesome_print', :require =&gt; 'ap'
-  gem 'mocha'
-  gem 'shoulda'
-  gem 'vcr'
-  gem 'webmock', :require =&gt; false
-end</code></pre>
-</div>
+<h2>Configuration</h2>
 
+<p>1 . <code>src/main/webapp/WEB-INF/web.xml</code> basically tells your Java Web App on which spring context it should use and the URL pattern mapping. In this example, we want to configure all our REST calls with /rest/*.</p>
 
-<p>5.) Run <code>bundle install</code> and then run <code>rails g rspec:install</code>.
-This will create the rspec folder and the rake file to create a test database.</p>
+<p>2 . <code>src/main/webapp/WEB-INF/applicationContext.xml</code> and <code>src/main/webapp/WEB-INF/manager-context.xml</code> is where we declare our spring beans. I deliberately separate them up so that manager classes will be declared in the manager-context.xml.</p>
 
-<p>6.) The structure of your <code>spec/</code> directory should mirror that of <code>app/</code>.
-For example, the spec file for <code>app/models/location.rb</code> would be <code>spec/models/location_spec.rb</code>.</p>
+<p>3 . <code>src/main/java/log4j2.xml</code> is where we configure our logging. We&rsquo;re using <a href="http://logging.apache.org/log4j/2.x/">Log4J2</a> in this example. This XML tells LOG4J to log spring-rest.log and to the terminal console.</p>
 
-<p>7.) Create your rspec test! Need example? See <a href="https://github.com/pugnusferreus/lunchpicker/tree/master/spec">here</a>.</p>
+<p>4 . <code>pom.xml</code> is our Maven build file. <dependencies /> tells Maven what this application&rsquo;s dependencies are so that Maven can fetch them from the Maven repository. <plugins />  is where we configure our Java compilation, WAR file build and Jetty configurations.</p>
 
-<p>8.) Now, in the lunchpicker directory, type <code>bundle exec rspec spec</code>.
-This will run the tests. Since we&rsquo;re testing the controllers and models, rspec would need to bootstrap all the Rails stuff.
-The result? Slowness.</p>
+<h2>Source</h2>
 
-<p>9.) To overcome this, we&rsquo;ll be using spork to bootstrap the Rails libraries.
-Open another terminal window and <code>cd</code> to the lunchpicker folder.
-Type in <code>bundle exec spork rspec</code>.</p>
+<p>1 . <code>com.progriff.managers.TestManager</code> is our manager class. We should always put our business logic in a manager class.</p>
 
-<p>10.) Open another window and <code>cd</code> into the lunchpicker folder.
-Type in <code>bundle exec rspec --drb spec</code>.
-Notice that the tests run faster.
-If you change any Rails related config, remember to restart spork.</p>
+<p>2 . <code>com.progriff.controllers.TestController</code> is our controller. Note that there is an <code>@Autowired</code> on top of the TestManager class. Spring will automatically wire up TestManager with TestController. Do note that your variable name must be the same as the bean id in the manager-context.xml file.</p>
 
-<p>What&rsquo;s VCR? VCR records your test suite&rsquo;s HTTP interactions and replay them during future test runs for fast, deterministic, accurate tests.
-We&rsquo;re interacting with Google Weather which is an external API.</p>
-
-<p>ps. <a href="http://lunch.progriff.com">lunchpicker</a> is now Rails 3</p>
+<p>3 . In TestController, for each methods that are to be mapped to a URL, we&rsquo;ll need <code>@RequestMapping</code> and <code>@ResponseBody</code>. You can set the REST URL path, Request Method and the Media Type that this REST will produce in the @RequestMapping annotation. Do note that when we return the java.util.Map in that method, Jackson will automatically convert the object into JSON.</p>
 </div>
 
 
@@ -153,7 +128,7 @@ We&rsquo;re interacting with Google Weather which is an external API.</p>
   
 
 
-<time datetime="2011-07-09T00:00:00+10:00" pubdate data-updated="true">Jul 9<span>th</span>, 2011</time>
+<time datetime="2015-03-02T19:00:00+11:00" pubdate data-updated="true">Mar 2<span>nd</span>, 2015</time>
       
 
 
@@ -161,7 +136,7 @@ We&rsquo;re interacting with Google Weather which is an external API.</p>
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2011/07/09/modernizing-lunchpicker-pt2/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2015/03/02/creating-a-rest-application-with-spring-4/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2015/03/02/creating-a-rest-application-with-spring-4/" >Tweet</a>
   
   
   
@@ -170,10 +145,8 @@ We&rsquo;re interacting with Google Weather which is an external API.</p>
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2011/06/26/modernizing-lunchpicker/" title="Previous Post: Modernizing Lunchpicker">&laquo; Modernizing Lunchpicker</a>
+        <a class="basic-alignment left" href="/blog/2014/08/30/scaling-a-video-with-ffmpeg/" title="Previous Post: Scaling a video with FFmpeg">&laquo; Scaling a video with FFmpeg</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2011/07/10/generating-jsp-with-batchjhaml/" title="Next Post: Generating JSPs With BatchJHaml">Generating JSPs With BatchJHaml &raquo;</a>
       
     </p>
   </footer>
