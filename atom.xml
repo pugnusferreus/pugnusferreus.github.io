@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2015-03-02T22:25:55+11:00</updated>
+  <updated>2015-03-03T20:46:45+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -34,7 +34,7 @@
 
 <p>2 . <code>src/main/webapp/WEB-INF/applicationContext.xml</code> and <code>src/main/webapp/WEB-INF/manager-context.xml</code> is where we declare our spring beans. I deliberately separate them up so that manager classes will be declared in the manager-context.xml.</p>
 
-<p>3 . <code>src/main/java/log4j2.xml</code> is where we configure our logging. We&rsquo;re using <a href="http://logging.apache.org/log4j/2.x/">Log4J2</a> in this example. This XML tells LOG4J to log spring-rest.log and to the terminal console.</p>
+<p>3 . <code>src/main/resources/log4j2.xml</code> is where we configure our logging. We&rsquo;re using <a href="http://logging.apache.org/log4j/2.x/">Log4J2</a> in this example. This XML tells LOG4J to log spring-rest.log and to the terminal console.</p>
 
 <p>4 . <code>pom.xml</code> is our Maven build file. <dependencies /> tells Maven what this application&rsquo;s dependencies are so that Maven can fetch them from the Maven repository. <plugins />  is where we configure our Java compilation, WAR file build and Jetty configurations.</p>
 
