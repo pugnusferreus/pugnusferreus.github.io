@@ -23,7 +23,7 @@ Configuration
 
 2 . `src/main/webapp/WEB-INF/applicationContext.xml` and `src/main/webapp/WEB-INF/manager-context.xml` is where we declare our spring beans. I deliberately separate them up so that manager classes will be declared in the manager-context.xml.
 
-3 . `src/main/java/log4j2.xml` is where we configure our logging. We're using <a href="http://logging.apache.org/log4j/2.x/">Log4J2</a> in this example. This XML tells LOG4J to log spring-rest.log and to the terminal console.
+3 . `src/main/resources/log4j2.xml` is where we configure our logging. We're using <a href="http://logging.apache.org/log4j/2.x/">Log4J2</a> in this example. This XML tells LOG4J to log spring-rest.log and to the terminal console.
 
 4 . `pom.xml` is our Maven build file. <dependencies /> tells Maven what this application's dependencies are so that Maven can fetch them from the Maven repository. <plugins />  is where we configure our Java compilation, WAR file build and Jetty configurations.
 
