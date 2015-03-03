@@ -5,12 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>BatchJHaml Update - Benson's Programming Journey</title>
+  <title>10 Reasons For Doing Code Reviews - Benson's Programming Journey</title>
   <meta name="author" content="Benson Lim">
 
   
-  <meta name="description" content="I&rsquo;ve updated BatchJHaml to support sub directories.
-If you set the last argument to true, it&rsquo;ll generate the Haml file in subdirectories &hellip;">
+  <meta name="description" content="Love it or hate it, code reviews proved to be quite important in software development process. Project managers might think that code reviews are a &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -19,7 +18,7 @@ If you set the last argument to true, it&rsquo;ll generate the Haml file in subd
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update">
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
@@ -57,7 +56,7 @@ If you set the last argument to true, it&rsquo;ll generate the Haml file in subd
   
   <header>
     
-      <h1 class="entry-title">BatchJHaml Update</h1>
+      <h1 class="entry-title">10 Reasons for Doing Code Reviews</h1>
     
     
       <p class="meta">
@@ -73,60 +72,29 @@ If you set the last argument to true, it&rsquo;ll generate the Haml file in subd
   
 
 
-<time datetime="2012-02-14T00:00:00+11:00" pubdate data-updated="true">Feb 14<span>th</span>, 2012</time>
+<time datetime="2015-03-03T20:56:00+11:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>I&rsquo;ve updated <a href="https://github.com/pugnusferreus/batchjhaml">BatchJHaml</a> to support sub directories.
-If you set the last argument to true, it&rsquo;ll generate the Haml file in subdirectories as well.
-Do note that the layout folder will be omitted.</p>
+<div class="entry-content"><p>Love it or hate it, code reviews proved to be quite important in software development process. Project managers might think that code reviews are a waste of time because it&rsquo;ll prolong development time. Not to be confused with pair programming or pair review, code reviews are similar to GIT&rsquo;s pull request. For SVN, we can use softwares like <a href="https://www.reviewboard.org">Review Board</a> or <a href="https://www.jetbrains.com/upsource/">Upsource</a>.</p>
 
-<p>Here is a sample from my build.xml</p>
+<p>Here are the 10 reasons that code reviews should be done in software development.</p>
 
-<div>
-  <pre><code class='xml'>&lt;target name=&quot;run&quot;&gt;
-  &lt;java fork=&quot;true&quot; 
-    classname=&quot;com.progriff.jhaml.BatchJHaml&quot; 
-    outputproperty=&quot;javaoutput&quot;&gt;
-    &lt;classpath&gt;
-      &lt;path refid=&quot;classpath&quot;/&gt;
-      &lt;path location=&quot;${dist}/BatchJHaml.jar&quot;/&gt;
-    &lt;/classpath&gt;
-    &lt;arg value=&quot;${haml.path}&quot;/&gt;
-    &lt;arg value=&quot;${haml.layout.path}&quot;/&gt;
-    &lt;arg value=&quot;${haml.output.path}&quot;/&gt;
-    &lt;arg value=&quot;${haml.output.extension}&quot;/&gt;
-    &lt;arg value=&quot;${haml.javascript.path}&quot;/&gt;
-    &lt;arg value=&quot;${haml.stylesheet.path}&quot;/&gt;
-    &lt;arg value=&quot;${haml.recursive}&quot; /&gt;
-    &lt;/java&gt;&lt;echo message=&quot;${javaoutput}&quot; /&gt;
-&lt;/target&gt;</code></pre>
-</div>
-
-
-<p>For example if you have the following in your haml folder,</p>
-
-<pre class="text">
-haml
-  |-- someDir
-        `- baz.haml
-  `foo.haml
-  `- bar.haml
-</pre>
-
-
-<p>The resulting jsp folder will look like this</p>
-
-<pre class="text">
-jsp
-  |-- someDir
-        `- baz.jsp
-  `foo.jsp
-  `- bar.jsp
-</pre>
+<ol>
+<li><p>Programmers are humans, and humans make mistakes. It is good to have an extra pair of eyes to review our code.</p></li>
+<li><p>We can learn each other&rsquo;s programming chops.</p></li>
+<li><p>Most of the time, we&rsquo;ll be working on different modules. By doing code reviews, there will be spread of knowledge.</p></li>
+<li><p>By being aware that our code will be reviewed by our peers, we&rsquo;ll be more conscious when we program hence, leading to better code quality.</p></li>
+<li><p>Code review can also improve our communication skills. We&rsquo;ll have to be prepared to answer the questions that will be asked by your peers.</p></li>
+<li><p>Possibly find more bugs related to scenarios that you never think of.</p></li>
+<li><p>Effective training tool for junior developers.</p></li>
+<li><p>Code reviews has virtually no risk and is a good risk management.</p></li>
+<li><p>By giving constant feedback on the source level, we will stop making the same mistakes over and over again.</p></li>
+<li><p>Improves code readability and code documentation.</p></li>
+</ol>
 
 </div>
 
@@ -150,7 +118,7 @@ jsp
   
 
 
-<time datetime="2012-02-14T00:00:00+11:00" pubdate data-updated="true">Feb 14<span>th</span>, 2012</time>
+<time datetime="2015-03-03T20:56:00+11:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2015</time>
       
 
 
@@ -158,7 +126,7 @@ jsp
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2012/02/14/batchjhaml-update/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews/" >Tweet</a>
   
   
   
@@ -167,10 +135,8 @@ jsp
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2012/02/08/resin-azure-sdk-for-java/" title="Previous Post: Resin 3.1 and Azure SDK for Java">&laquo; Resin 3.1 and Azure SDK for Java</a>
+        <a class="basic-alignment left" href="/blog/2015/03/02/creating-a-rest-application-with-spring-4/" title="Previous Post: Creating a REST application with Spring 4">&laquo; Creating a REST application with Spring 4</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2013/06/29/moved-to-github-pages-and-octopress/" title="Next Post: Moved to Github Pages and Octopress">Moved to Github Pages and Octopress &raquo;</a>
       
     </p>
   </footer>

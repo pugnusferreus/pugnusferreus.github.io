@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2015-03-03T20:46:45+11:00</updated>
+  <updated>2015-03-03T21:51:53+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,31 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[10 Reasons For Doing Code Reviews]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews/"/>
+    <updated>2015-03-03T20:56:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews</id>
+    <content type="html"><![CDATA[<p>Love it or hate it, code reviews proved to be quite important in software development process. Project managers might think that code reviews are a waste of time because it&rsquo;ll prolong development time. Not to be confused with pair programming or pair review, code reviews are similar to GIT&rsquo;s pull request. For SVN, we can use softwares like <a href="https://www.reviewboard.org">Review Board</a> or <a href="https://www.jetbrains.com/upsource/">Upsource</a>.</p>
+
+<p>Here are the 10 reasons that code reviews should be done in software development.</p>
+
+<ol>
+<li><p>Programmers are humans, and humans make mistakes. It is good to have an extra pair of eyes to review our code.</p></li>
+<li><p>We can learn each other&rsquo;s programming chops.</p></li>
+<li><p>Most of the time, we&rsquo;ll be working on different modules. By doing code reviews, there will be spread of knowledge.</p></li>
+<li><p>By being aware that our code will be reviewed by our peers, we&rsquo;ll be more conscious when we program hence, leading to better code quality.</p></li>
+<li><p>Code review can also improve our communication skills. We&rsquo;ll have to be prepared to answer the questions that will be asked by your peers.</p></li>
+<li><p>Possibly find more bugs related to scenarios that you never think of.</p></li>
+<li><p>Effective training tool for junior developers.</p></li>
+<li><p>Code reviews has virtually no risk and is a good risk management.</p></li>
+<li><p>By giving constant feedback on the source level, we will stop making the same mistakes over and over again.</p></li>
+<li><p>Improves code readability and code documentation.</p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Creating a REST application with Spring 4]]></title>
