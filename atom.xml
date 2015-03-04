@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2015-03-03T21:51:53+11:00</updated>
+  <updated>2015-03-04T21:47:49+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,29 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Self Improvement]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2015/03/04/self-improvement/"/>
+    <updated>2015-03-04T20:14:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2015/03/04/self-improvement</id>
+    <content type="html"><![CDATA[<p>Programmers are mostly perceived as quiet, anti-social and bad in communication. The sad truth is, alot of programmers do lack of communication skills and even take pride of what they do. Many companies require some sort of middle management to manage the developers because most of us are code monkeys and will only continue to do so if we do not change our mindset.</p>
+
+<p>Here are some tips that I&rsquo;ve learnt over the years to get out of the abyss.</p>
+
+<ol>
+<li><p>Always communicate &ndash; Love Agile or hate it, it teaches me to constantly communicate with your peers, QA, technical lead and your project manager. If you run into a road block, keeping the problem to yourself won&rsquo;t solve anything. Give your one day to study the problem. If you can&rsquo;t solve it, talk to your peers or technical lead as they&rsquo;ve probably solve the problem before.</p></li>
+<li><p>Be proactive &ndash; To be proactive, we need to be lazy. Yeap! Automate your stuff. If something becomes to repetitive, automate. Your software annoys you too much? Fix is for the better.</p></li>
+<li><p>Respect the testers &ndash; Earlier in my career, I hated QA testers alot. Everytime they file a bug, I felt insulted. I would rather let the testers to weed out all the bugs rather than releasing the bugs into production. So respect your testers and work with them closely. If there are dispute in the specification, bring a third party in and have a civilized conversation.</p></li>
+<li><p>Take pride in what you do &ndash; Sure, you&rsquo;re only a small little individual in your company, but if you do not feel proud and take pride in what you do, how would you expect the rest of the company to respect you and the project that you&rsquo;re working on? Taking pride in your project will make you more proactive and strife for improvements.</p></li>
+<li><p>When you say it is done, please make sure that it works &ndash; Most developers claim that their task is done. When asked if they&rsquo;ve done an end to end testing, the answer is always no. When you mark your ticket as &ldquo;Resolved&rdquo;, please make sure that it really works. Sure, we&rsquo;ll find bugs but please make an effort to test your work.</p></li>
+<li><p>Always think ahead &ndash; The world evolves and so does our software. Always think about how you can improve your software or your software development process. Read more and learn more. As long as we live, we&rsquo;ll never stop learning.</p></li>
+<li><p>Do not blame &ndash; It is easy for us to vent our frustrations on some one else. Try looking at your own code 2 years ago and cringe.</p></li>
+<li><p>Be a teacher &ndash; The more you teach, the faster you learn. It is also a great way to learn from your peers as well.</p></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[10 Reasons For Doing Code Reviews]]></title>
