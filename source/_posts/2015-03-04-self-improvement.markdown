@@ -12,7 +12,7 @@ Here are some tips that I've learnt over the years to get out of the abyss.
 
 1. Always communicate - Love Agile or hate it, it teaches me to constantly communicate with your peers, QA, technical lead and your project manager. If you run into a road block, keeping the problem to yourself won't solve anything. Give your one day to study the problem. If you can't solve it, talk to your peers or technical lead as they've probably solve the problem before. Communication isn't limited to verbal communication. It can be emails, code comments and even code commit messages.
 
-2. Be proactive - To be proactive, we need to be lazy. Yeap! Automate your stuff. If something becomes to repetitive, automate. Your software annoys you too much? Fix is for the better.
+2. Be proactive - To be proactive, we need to be lazy. Yeap! Automate your stuff. If something becomes too repetitive, automate. Your software annoys you too much? Fix is for the better.
 
 3. Respect the testers - Earlier in my career, I hated QA testers alot. Everytime they file a bug, I felt insulted. I would rather let the testers to weed out all the bugs rather than releasing the bugs into production. So respect your testers and work with them closely. If there are dispute in the specification, bring a third party in and have a civilized conversation.
 
