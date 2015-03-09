@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2015-03-09T21:30:40+11:00</updated>
+  <updated>2015-03-09T21:32:33+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -30,6 +30,8 @@
 <li>To run the script every 5 minutes, enter <code>*/5 * * * * /&lt;your path&gt;/monitor.py</code></li>
 </ol>
 
+
+<p>Note: I&rsquo;ve only tested this script on Python 2.6 (since my server came with that version of Python). I&rsquo;m not sure if it&rsquo;ll work on Python 3.</p>
 ]]></content>
   </entry>
   
