@@ -5,11 +5,11 @@
 <!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
 <head>
   <meta charset="utf-8">
-  <title>10 Reasons For Doing Code Reviews - Benson's Programming Journey</title>
+  <title>Simple Python Script To Monitor Your Web Server - Benson's Programming Journey</title>
   <meta name="author" content="Benson Lim">
 
   
-  <meta name="description" content="Love it or hate it, code reviews proved to be quite important in software development process. Project managers might think that code reviews are a &hellip;">
+  <meta name="description" content="Too cheap to get a proper monitoring tool? Here&rsquo;s a simple Python script that I wrote that will send me an email if my webserver isn&rsquo;t &hellip;">
   
 
   <!-- http://t.co/dKP3o1e -->
@@ -18,7 +18,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
 
   
-  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews">
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2015/03/09/simple-python-script-to-monitor-your-web-server">
   <link href="/favicon.png" rel="icon">
   <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
   <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
@@ -56,7 +56,7 @@
   
   <header>
     
-      <h1 class="entry-title">10 Reasons for Doing Code Reviews</h1>
+      <h1 class="entry-title">Simple Python Script to Monitor Your Web Server</h1>
     
     
       <p class="meta">
@@ -72,28 +72,23 @@
   
 
 
-<time datetime="2015-03-03T20:56:00+11:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2015</time>
+<time datetime="2015-03-09T19:31:00+11:00" pubdate data-updated="true">Mar 9<span>th</span>, 2015</time>
         
       </p>
     
   </header>
 
 
-<div class="entry-content"><p>Love it or hate it, code reviews proved to be quite important in software development process. Project managers might think that code reviews are a waste of time because it&rsquo;ll prolong development time. Not to be confused with pair programming or pair review, code reviews are similar to GIT&rsquo;s pull request. For SVN, we can use softwares like <a href="https://www.reviewboard.org">Review Board</a> or <a href="https://www.jetbrains.com/upsource/">Upsource</a>.</p>
-
-<p>Here are the 10 reasons that code reviews should be done in software development.</p>
+<div class="entry-content"><p>Too cheap to get a proper monitoring tool? Here&rsquo;s a simple Python script that I wrote that will send me an email if my webserver isn&rsquo;t returning HTTP 200.</p>
 
 <ol>
-<li><p>Programmers are humans, and humans make mistakes. It is good to have an extra pair of eyes to review our code.</p></li>
-<li><p>We can learn each other&rsquo;s programming chops.</p></li>
-<li><p>Most of the time, we&rsquo;ll be working on different modules. By doing code reviews, there will be spread of knowledge.</p></li>
-<li><p>By being aware that our code will be reviewed by our peers, we&rsquo;ll be more conscious when we program hence, leading to better code quality.</p></li>
-<li><p>Code review can also improve our communication skills. We&rsquo;ll have to be prepared to answer the questions that will be asked by your peers.</p></li>
-<li><p>Possibly find more bugs related to scenarios that you never think of.</p></li>
-<li><p>Effective training tool for junior developers.</p></li>
-<li><p>Code reviews has virtually no risk and is a good risk management.</p></li>
-<li><p>By giving constant feedback on the source level, we will stop making the same mistakes over and over again.</p></li>
-<li><p>Improves code readability and code documentation.</p></li>
+<li><code>git clone https://github.com/pugnusferreus/py_monitoring.git</code></li>
+<li>Open monitoring.py with your favourite text editor.</li>
+<li>Change the <code>EMAIL_LIST</code> variable, <code>SERVER</code> and <code>FROM</code> variable.</li>
+<li>On line 36 and 37, change your webserver address and the email subject and message.</li>
+<li>Copy monitoring.py to your webserver</li>
+<li>Add the script to your crontab by typing sudo crontab -e</li>
+<li>To run the script every 5 minutes, enter <code>*/5 * * * * /&lt;your path&gt;/monitor.py</code></li>
 </ol>
 
 </div>
@@ -118,7 +113,7 @@
   
 
 
-<time datetime="2015-03-03T20:56:00+11:00" pubdate data-updated="true">Mar 3<span>rd</span>, 2015</time>
+<time datetime="2015-03-09T19:31:00+11:00" pubdate data-updated="true">Mar 9<span>th</span>, 2015</time>
       
 
 
@@ -126,7 +121,7 @@
     
       <div class="sharing">
   
-  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2015/03/03/10-reasons-for-doing-code-reviews/" >Tweet</a>
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2015/03/09/simple-python-script-to-monitor-your-web-server/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2015/03/09/simple-python-script-to-monitor-your-web-server/" >Tweet</a>
   
   
   
@@ -135,10 +130,8 @@
     
     <p class="meta">
       
-        <a class="basic-alignment left" href="/blog/2015/03/02/creating-a-rest-application-with-spring-4/" title="Previous Post: Creating a REST application with Spring 4">&laquo; Creating a REST application with Spring 4</a>
+        <a class="basic-alignment left" href="/blog/2015/03/04/self-improvement/" title="Previous Post: Self Improvement">&laquo; Self Improvement</a>
       
-      
-        <a class="basic-alignment right" href="/blog/2015/03/04/self-improvement/" title="Next Post: Self Improvement">Self Improvement &raquo;</a>
       
     </p>
   </footer>

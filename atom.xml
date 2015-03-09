@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2015-03-06T10:37:58+11:00</updated>
+  <updated>2015-03-09T21:30:40+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,26 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Simple Python Script To Monitor Your Web Server]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2015/03/09/simple-python-script-to-monitor-your-web-server/"/>
+    <updated>2015-03-09T19:31:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2015/03/09/simple-python-script-to-monitor-your-web-server</id>
+    <content type="html"><![CDATA[<p>Too cheap to get a proper monitoring tool? Here&rsquo;s a simple Python script that I wrote that will send me an email if my webserver isn&rsquo;t returning HTTP 200.</p>
+
+<ol>
+<li><code>git clone https://github.com/pugnusferreus/py_monitoring.git</code></li>
+<li>Open monitoring.py with your favourite text editor.</li>
+<li>Change the <code>EMAIL_LIST</code> variable, <code>SERVER</code> and <code>FROM</code> variable.</li>
+<li>On line 36 and 37, change your webserver address and the email subject and message.</li>
+<li>Copy monitoring.py to your webserver</li>
+<li>Add the script to your crontab by typing sudo crontab -e</li>
+<li>To run the script every 5 minutes, enter <code>*/5 * * * * /&lt;your path&gt;/monitor.py</code></li>
+</ol>
+
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Self Improvement]]></title>
@@ -1005,96 +1025,6 @@ we might externally syndicate our videos to another provider (eg. Vimeo). So, I 
 
 
 <p>Most importantly, before you start scribbling, get away from your computer. Computers can be distracting at times (emails, IM, Twitter). You&rsquo;ll be able to see a hollistic view without those distractions.</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[How to install jekyll]]></title>
-    <link href="http://pugnusferreus.github.io/blog/2011/05/18/how-to-install-jekyll/"/>
-    <updated>2011-05-18T00:00:00+10:00</updated>
-    <id>http://pugnusferreus.github.io/blog/2011/05/18/how-to-install-jekyll</id>
-    <content type="html"><![CDATA[<p>This is my first blog post entry for progriff.com. Since this blog was made with <a href="https://github.com/mojombo/jekyll">Jekyll</a>, I&rsquo;ll walk you through how to setup a basic blog with Jekyll. Why Jekyll? Here are a couple of points I could think of :</p>
-
-<ul>
-<li>It generates static pages for you.</li>
-<li>You do not need a database in your server</li>
-<li>You do not need a webserver (Apache, IIS, etc &hellip;)</li>
-<li>Without all those mumbo jumbo on your server, your server will be more secure</li>
-</ul>
-
-
-<p>Here&rsquo;s how:</p>
-
-<p>1 . First, install Jekyll</p>
-
-<pre><code>&lt;div&gt;
-</code></pre>
-
-<p>  <pre><code class='bash'>$ sudo gem install jekyll</code></pre>
-</div></p>
-
-<p>2 . Then install rdiscount</p>
-
-<pre><code>&lt;div&gt;
-</code></pre>
-
-<p>  <pre><code class='bash'>$ sudo gem install rdiscount</code></pre>
-</div></p>
-
-<p>3 . Make a directory. Let&rsquo;s call it blog.</p>
-
-<pre><code>&lt;div&gt;
-</code></pre>
-
-<p>  <pre><code class='bash'>$ mkdir blog</p>
-
-<pre><code>$ cd blog&lt;/code&gt;&lt;/pre&gt;
-</code></pre>
-
-<p></div></p>
-
-<p>4 . Create the directory structure as of below.</p>
-
-<pre class="text">
-      blog
-        |-- _layouts
-                `-- default.html
-                `-- post.html
-        |-- _posts
-           `-- 2011-05-18-foo-bar.md
-        |-- _site
-        |-- css
-        `-- index.html
-        `-- _config.yml
-    
-</pre>
-
-
-<p>5 . This is optional. If you need code syntax highlighting, you&rsquo;ll need Pygment.</p>
-
-<pre><code>&lt;div&gt;
-</code></pre>
-
-<p>  <pre><code class='bash'>$ sudo easy_install Pygments</p>
-
-<pre><code>$ pygmentize -S default -f html &amp;gt; /path/to/your/blog/css/pygment.css&lt;/code&gt;&lt;/pre&gt;
-</code></pre>
-
-<p></div></p>
-
-<p>6 . Take a look at the <a href="https://github.com/pugnusferreus/progriff_blog">source</a> for this blog and copy whatever you need.</p>
-
-<p>7 . After you&rsquo;re done, you want to preview your blog. In your terminal, type</p>
-
-<pre><code>&lt;div&gt;
-</code></pre>
-
-<p>  <pre><code class='bash'>$ jekyll &mdash;server &mdash;auto</code></pre>
-</div></p>
-
-<p>8 . Go to your browser and go to &ldquo;<a href="http://localhost:4000">http://localhost:4000</a>&rdquo;</p>
-
-<p>9 . If you need to compile the pages without starting the server, just type &ldquo;jekyll&rdquo;</p>
 ]]></content>
   </entry>
   
