@@ -1,0 +1,300 @@
+
+<!DOCTYPE html>
+<!--[if IEMobile 7 ]><html class="no-js iem7"><![endif]-->
+<!--[if lt IE 9]><html class="no-js lte-ie8"><![endif]-->
+<!--[if (gt IE 8)|(gt IEMobile 7)|!(IEMobile)|!(IE)]><!--><html class="no-js" lang="en"><!--<![endif]-->
+<head>
+  <meta charset="utf-8">
+  <title>Integrating Logstash With Your Java Application - Benson's Programming Journey</title>
+  <meta name="author" content="Benson Lim">
+
+  
+  <meta name="description" content="What is Logstash? Logstash is basically a data collection engine (which in this example we&rsquo;ll use to collect data from our Java Log4J logs). We &hellip;">
+  
+
+  <!-- http://t.co/dKP3o1e -->
+  <meta name="HandheldFriendly" content="True">
+  <meta name="MobileOptimized" content="320">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+
+  
+  <link rel="canonical" href="http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application">
+  <link href="/favicon.png" rel="icon">
+  <link href="/stylesheets/screen.css" media="screen, projection" rel="stylesheet" type="text/css">
+  <link href="/atom.xml" rel="alternate" title="Benson's Programming Journey" type="application/atom+xml">
+  <script src="/javascripts/modernizr-2.0.js"></script>
+  <script src="//ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js"></script>
+  <script>!window.jQuery && document.write(unescape('%3Cscript src="./javascripts/lib/jquery.min.js"%3E%3C/script%3E'))</script>
+  <script src="/javascripts/octopress.js" type="text/javascript"></script>
+  <!--Fonts from Google"s Web font directory at http://google.com/webfonts -->
+<link href="http://fonts.googleapis.com/css?family=PT+Serif:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+<link href="http://fonts.googleapis.com/css?family=PT+Sans:regular,italic,bold,bolditalic" rel="stylesheet" type="text/css">
+
+  
+
+</head>
+
+<body   >
+  <header role="banner"><hgroup>
+  <div id="header-inner">
+    <span class="first"><img src="/favicon.png" alt="Progriff icon"/> <a href="/">Benson's Programming Journey</a></span>
+    <br/>
+    <span><a href="/about">about</a></span>
+    <span><a href="http://www.github.com/pugnusferreus">github</a></span>
+    <span><a href="https://twitter.com/pugnusferreus" title="twitter">twitter</a></span>
+    <span><a href="http://www.flickr.com/photos/95990368@N08/" title="twitter">flickr</a></span>
+    <span><a href="https://soundcloud.com/benson-cs-lim" title="twitter">soundcloud</a></span>
+    <span class="last"><a href="/atom.xml" title="subscribe via RSS">rss</a></span>
+  </div>
+</hgroup>
+
+</header>
+  <div id="main">
+    <div id="content">
+      <div>
+<article class="hentry" role="article">
+  
+  <header>
+    
+      <h1 class="entry-title">Integrating Logstash With Your Java Application</h1>
+    
+    
+      <p class="meta">
+        
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-03T21:42:00+11:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2016</time>
+        
+      </p>
+    
+  </header>
+
+
+<div class="entry-content"><p>What is Logstash? Logstash is basically a data collection engine (which in this example we&rsquo;ll use to collect data from our Java Log4J logs).</p>
+
+<p>We will be using ELK stack (Elasticsearch, Logstash and Kibana) on Mac OS X in this tutorial.</p>
+
+<p>Before we proceed, we&rsquo;ll need the following:</p>
+
+<ul>
+<li><a href="https://www.elastic.co/downloads/elasticsearch">Elasticsearch</a></li>
+<li><a href="https://www.elastic.co/downloads/logstash">Logstash</a></li>
+<li><a href="https://www.elastic.co/downloads/kibana">Kibana</a></li>
+<li><a href="https://www.elastic.co/downloads/beats/filebeat">Filebeat</a></li>
+</ul>
+
+
+<p>Optional:</p>
+
+<ul>
+<li><a href="https://www.elastic.co/downloads/beats/topbeat">Topbeat</a></li>
+<li><a href="https://www.elastic.co/downloads/beats/packetbeat">Packetbeat</a></li>
+</ul>
+
+
+<p>1 . Extract Filebeat into the server where your Java application server resides</p>
+
+<p>2 . Open up filebeat.yml</p>
+
+<p>3 . Under the filebeat &ndash;> prospectors, add the following config:</p>
+
+<pre><code> -
+  paths:
+    - /var/log/yourApp/yourlog*
+  type: log
+  fields:
+    application: your-app
+</code></pre>
+
+<p>4 . Under the <code>output</code> section, enter your Logstash host. It should look something like this <code>hosts: ["localhost:5044"]</code>. You can change the index name by adding <code>index: your_index</code> in the same Logstash section.</p>
+
+<p>5 . Extract Logstash to your Logstash server. This can be in the same machine as Filebeat if you like.</p>
+
+<p>6 . In your Logstash server, create <code>logstash.conf</code> in the Logstash application folder.</p>
+
+<p>7 . Put the following into your config file.</p>
+
+<pre><code># The # character at the beginning of a line indicates a comment. Use
+# comments to describe your configuration.
+input {
+  beats {
+    port =&gt; 5044
+    type =&gt; "log4j"
+    codec =&gt; multiline {
+      # Grok pattern names are valid!
+      pattern =&gt; "^%{TIMESTAMP_ISO8601} "
+      negate =&gt; true
+      what =&gt; previous
+    }
+  }
+
+  # optional: add this section if you want Logstash to collect data from a table eg. audit table....
+  # if not, comment or remove this section
+  jdbc {
+    # Postgres jdbc connection string to our database, mydb
+    jdbc_connection_string =&gt; "jdbc:postgresql://localhost:5432/yourdatabase"
+    # The user we wish to execute our statement as
+    jdbc_user =&gt; "your_postgres_username"
+    jdbc_password =&gt; "your_postgres_password"
+    # The path to our downloaded jdbc driver
+    jdbc_driver_library =&gt; "postgresql-9.3-1102-jdbc41.jar"
+    # The name of the driver class for Postgresql
+    jdbc_driver_class =&gt; "org.postgresql.Driver"
+    # our query
+    statement =&gt; "SELECT * from your_audit_table"
+  }
+}
+
+output {
+  stdout { codec =&gt; json_lines }
+
+  elasticsearch {
+    # point to your elasticsearch host
+    hosts =&gt; ["localhost:9200"]
+    index =&gt; "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+    document_type =&gt; "%{[@metadata][type]}"
+  }
+}
+</code></pre>
+
+<p>8 . Extract Elasticsearch and run <code>bin/elasticsearch</code></p>
+
+<p>9 . Go to the Logstash application folder that you&rsquo;ve extracted and run <code>bin/logstash -f logstash.conf</code></p>
+
+<p>10 . Now, we run FileBeat to delivery the logs to Logstash by running <code>sudo ./filebeat -e -c filebeat.yml -d "publish"</code></p>
+
+<p>11 . We need a front end to view the data that&rsquo;s been feed into Elasticsearch. Hence we&rsquo;ll need Kibana. Extract Kibana and edit config/kibana.yml.</p>
+
+<p>12 . If your Elasticsearch resides on another server, uncomment <code>elasticsearch.url</code> .</p>
+
+<p>13 . Now close the file and run Kibana with <code>bin/kibana</code></p>
+
+<p>14 . Open up <a href="http://localhost:5601">http://localhost:5601</a> and you&rsquo;ll be asked to enter your index name. Use the index name from step 4. For example <code>yourIndex-*</code> .</p>
+
+<p>15 . Once that is done, go to the <code>Discover</code> tab and change the time frame on the top right corner.</p>
+</div>
+
+
+  <footer>
+    <p class="meta">
+      
+  
+
+<span class="byline author vcard">Posted by <span class="fn">Benson Lim</span></span>
+
+      
+
+
+
+
+
+
+
+
+  
+
+
+<time datetime="2016-01-03T21:42:00+11:00" pubdate data-updated="true">Jan 3<span>rd</span>, 2016</time>
+      
+
+
+    </p>
+    
+      <div class="sharing">
+  
+  <a href="http://twitter.com/share" class="twitter-share-button" data-url="http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application/" data-via="" data-counturl="http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application/" >Tweet</a>
+  
+  
+  
+</div>
+
+    
+    <p class="meta">
+      
+        <a class="basic-alignment left" href="/blog/2015/03/09/simple-python-script-to-monitor-your-web-server/" title="Previous Post: Simple Python Script To Monitor Your Web Server">&laquo; Simple Python Script To Monitor Your Web Server</a>
+      
+      
+    </p>
+  </footer>
+</article>
+
+</div>
+
+<aside class="sidebar">
+  
+    <section>
+  <h1>Recent Posts</h1>
+  <ul id="recent_posts">
+    
+      <li class="post">
+        <a href="/blog/2016/01/03/integrating-logstash-with-your-java-application/">Integrating Logstash With Your Java Application</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/09/simple-python-script-to-monitor-your-web-server/">Simple Python Script to Monitor Your Web Server</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/04/self-improvement/">Self Improvement</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/03/10-reasons-for-doing-code-reviews/">10 Reasons for Doing Code Reviews</a>
+      </li>
+    
+      <li class="post">
+        <a href="/blog/2015/03/02/creating-a-rest-application-with-spring-4/">Creating a REST Application With Spring 4</a>
+      </li>
+    
+  </ul>
+</section>
+
+
+
+
+
+  
+</aside>
+
+
+    </div>
+  </div>
+  
+  <p>
+  Copyright &copy; 2016 - Benson Lim -
+</p>
+
+
+  
+
+
+
+
+
+
+
+  <script type="text/javascript">
+    (function(){
+      var twitterWidgets = document.createElement('script');
+      twitterWidgets.type = 'text/javascript';
+      twitterWidgets.async = true;
+      twitterWidgets.src = 'http://platform.twitter.com/widgets.js';
+      document.getElementsByTagName('head')[0].appendChild(twitterWidgets);
+    })();
+  </script>
+
+
+
+
+
+</body>
+</html>

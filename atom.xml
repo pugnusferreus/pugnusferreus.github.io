@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2015-03-09T21:32:33+11:00</updated>
+  <updated>2016-01-04T22:52:24+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -12,6 +12,116 @@
   </author>
   <generator uri="http://octopress.org/">Octopress</generator>
 
+  
+  <entry>
+    <title type="html"><![CDATA[Integrating Logstash With Your Java Application]]></title>
+    <link href="http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application/"/>
+    <updated>2016-01-03T21:42:00+11:00</updated>
+    <id>http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application</id>
+    <content type="html"><![CDATA[<p>What is Logstash? Logstash is basically a data collection engine (which in this example we&rsquo;ll use to collect data from our Java Log4J logs).</p>
+
+<p>We will be using ELK stack (Elasticsearch, Logstash and Kibana) on Mac OS X in this tutorial.</p>
+
+<p>Before we proceed, we&rsquo;ll need the following:</p>
+
+<ul>
+<li><a href="https://www.elastic.co/downloads/elasticsearch">Elasticsearch</a></li>
+<li><a href="https://www.elastic.co/downloads/logstash">Logstash</a></li>
+<li><a href="https://www.elastic.co/downloads/kibana">Kibana</a></li>
+<li><a href="https://www.elastic.co/downloads/beats/filebeat">Filebeat</a></li>
+</ul>
+
+
+<p>Optional:</p>
+
+<ul>
+<li><a href="https://www.elastic.co/downloads/beats/topbeat">Topbeat</a></li>
+<li><a href="https://www.elastic.co/downloads/beats/packetbeat">Packetbeat</a></li>
+</ul>
+
+
+<p>1 . Extract Filebeat into the server where your Java application server resides</p>
+
+<p>2 . Open up filebeat.yml</p>
+
+<p>3 . Under the filebeat &ndash;> prospectors, add the following config:</p>
+
+<pre><code> -
+  paths:
+    - /var/log/yourApp/yourlog*
+  type: log
+  fields:
+    application: your-app
+</code></pre>
+
+<p>4 . Under the <code>output</code> section, enter your Logstash host. It should look something like this <code>hosts: ["localhost:5044"]</code>. You can change the index name by adding <code>index: your_index</code> in the same Logstash section.</p>
+
+<p>5 . Extract Logstash to your Logstash server. This can be in the same machine as Filebeat if you like.</p>
+
+<p>6 . In your Logstash server, create <code>logstash.conf</code> in the Logstash application folder.</p>
+
+<p>7 . Put the following into your config file.</p>
+
+<pre><code># The # character at the beginning of a line indicates a comment. Use
+# comments to describe your configuration.
+input {
+  beats {
+    port =&gt; 5044
+    type =&gt; "log4j"
+    codec =&gt; multiline {
+      # Grok pattern names are valid!
+      pattern =&gt; "^%{TIMESTAMP_ISO8601} "
+      negate =&gt; true
+      what =&gt; previous
+    }
+  }
+
+  # optional: add this section if you want Logstash to collect data from a table eg. audit table....
+  # if not, comment or remove this section
+  jdbc {
+    # Postgres jdbc connection string to our database, mydb
+    jdbc_connection_string =&gt; "jdbc:postgresql://localhost:5432/yourdatabase"
+    # The user we wish to execute our statement as
+    jdbc_user =&gt; "your_postgres_username"
+    jdbc_password =&gt; "your_postgres_password"
+    # The path to our downloaded jdbc driver
+    jdbc_driver_library =&gt; "postgresql-9.3-1102-jdbc41.jar"
+    # The name of the driver class for Postgresql
+    jdbc_driver_class =&gt; "org.postgresql.Driver"
+    # our query
+    statement =&gt; "SELECT * from your_audit_table"
+  }
+}
+
+output {
+  stdout { codec =&gt; json_lines }
+
+  elasticsearch {
+    # point to your elasticsearch host
+    hosts =&gt; ["localhost:9200"]
+    index =&gt; "%{[@metadata][beat]}-%{+YYYY.MM.dd}"
+    document_type =&gt; "%{[@metadata][type]}"
+  }
+}
+</code></pre>
+
+<p>8 . Extract Elasticsearch and run <code>bin/elasticsearch</code></p>
+
+<p>9 . Go to the Logstash application folder that you&rsquo;ve extracted and run <code>bin/logstash -f logstash.conf</code></p>
+
+<p>10 . Now, we run FileBeat to delivery the logs to Logstash by running <code>sudo ./filebeat -e -c filebeat.yml -d "publish"</code></p>
+
+<p>11 . We need a front end to view the data that&rsquo;s been feed into Elasticsearch. Hence we&rsquo;ll need Kibana. Extract Kibana and edit config/kibana.yml.</p>
+
+<p>12 . If your Elasticsearch resides on another server, uncomment <code>elasticsearch.url</code> .</p>
+
+<p>13 . Now close the file and run Kibana with <code>bin/kibana</code></p>
+
+<p>14 . Open up <a href="http://localhost:5601">http://localhost:5601</a> and you&rsquo;ll be asked to enter your index name. Use the index name from step 4. For example <code>yourIndex-*</code> .</p>
+
+<p>15 . Once that is done, go to the <code>Discover</code> tab and change the time frame on the top right corner.</p>
+]]></content>
+  </entry>
   
   <entry>
     <title type="html"><![CDATA[Simple Python Script To Monitor Your Web Server]]></title>
@@ -991,42 +1101,6 @@ Hibernate and hsql will automatically creates the table for you.</p>
 
 <p>Make sure that your hibernate config points to the HSQL DB and your model is mapped.
 Open up &ldquo;com.progriff.dao.UserDaoTest&rdquo; and you can see that it&rsquo;s your typical Java Unit Test</p>
-]]></content>
-  </entry>
-  
-  <entry>
-    <title type="html"><![CDATA[Things to do before you start programming]]></title>
-    <link href="http://pugnusferreus.github.io/blog/2011/05/23/things-to-do-before-you-start-programming/"/>
-    <updated>2011-05-23T00:00:00+10:00</updated>
-    <id>http://pugnusferreus.github.io/blog/2011/05/23/things-to-do-before-you-start-programming</id>
-    <content type="html"><![CDATA[<p>I&rsquo;ve been reading <a href="http://pragprog.com/titles/ahptl/pragmatic-thinking-and-learning">Pragmatic Thinking &amp; Learning</a> by Andy Hunt.
-In one of the chapters, the author talks about UML. Yes, even I myself find that UML can get a bit boring. He suggests that I literally draw out
-the diagram. And so I did. The author also suggests that you can do the same with Lego bricks or by role playing, but I won&rsquo;t go into that.</p>
-
-<p>At <a href="http://www.movideo.com">movideo</a>, I&rsquo;ve been assigned to make a program that runs on the server and upload videos to YouTube. In the future
-we might externally syndicate our videos to another provider (eg. Vimeo). So, I come up with
-<a href="http://pugnusferreus.github.io/images/external_syndication.png">this</a> diagram to see how it can aid me with my software development process.</p>
-
-<p>This diagram actually helped me by:</p>
-
-<ul>
-<li><p>Acting as a check list</p></li>
-<li><p>Making Test-driven Development(TDD) easier. Why? By looking at this diagram, you&rsquo;ll be able to see the hollistic picture. By having a hollistic picture of the entire application that you&rsquo;re about to write, it&rsquo;s easier for you to write unit test for it&rsquo;s expected behaviour</p></li>
-<li><p>Writing pseudo codes. I don&rsquo;t actually write pseudocode à la COBOL era, but for every function that I write, I&rsquo;ll write comments of the things that I need to do.For example:
-<div>
-<pre><code class='java'>public void create()
-{
-  // do validation</p>
-
-<p>  // check if record exists</p>
-
-<p>  // save to database <br/>
-}</code></pre>
-</div></p></li>
-</ul>
-
-
-<p>Most importantly, before you start scribbling, get away from your computer. Computers can be distracting at times (emails, IM, Twitter). You&rsquo;ll be able to see a hollistic view without those distractions.</p>
 ]]></content>
   </entry>
   
