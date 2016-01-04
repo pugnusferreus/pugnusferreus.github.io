@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2016-01-04T22:52:24+11:00</updated>
+  <updated>2016-01-05T10:23:26+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -18,7 +18,7 @@
     <link href="http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application/"/>
     <updated>2016-01-03T21:42:00+11:00</updated>
     <id>http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application</id>
-    <content type="html"><![CDATA[<p>What is Logstash? Logstash is basically a data collection engine (which in this example we&rsquo;ll use to collect data from our Java Log4J logs).</p>
+    <content type="html"><![CDATA[<p>What is Logstash? Logstash is basically a data collection engine (which, in this example we&rsquo;ll use it to collect data from our Java Log4J logs).</p>
 
 <p>We will be using ELK stack (Elasticsearch, Logstash and Kibana) on Mac OS X in this tutorial.</p>
 
@@ -109,17 +109,23 @@ output {
 
 <p>9 . Go to the Logstash application folder that you&rsquo;ve extracted and run <code>bin/logstash -f logstash.conf</code></p>
 
-<p>10 . Now, we run FileBeat to delivery the logs to Logstash by running <code>sudo ./filebeat -e -c filebeat.yml -d "publish"</code></p>
+<p>10 . Go to your FileBeat folder and import the template into your Elasticsearch by running <code>curl -XPUT 'http://localhost:9200/_template/filebeat?pretty' -d@filebeat.template.json</code></p>
 
-<p>11 . We need a front end to view the data that&rsquo;s been feed into Elasticsearch. Hence we&rsquo;ll need Kibana. Extract Kibana and edit config/kibana.yml.</p>
+<p>11 . Now, we run FileBeat to delivery the logs to Logstash by running <code>sudo ./filebeat -e -c filebeat.yml -d "publish"</code></p>
 
-<p>12 . If your Elasticsearch resides on another server, uncomment <code>elasticsearch.url</code> .</p>
+<p>12 . We need a front end to view the data that&rsquo;s been feed into Elasticsearch. Hence we&rsquo;ll need Kibana. Extract Kibana and edit config/kibana.yml.</p>
 
-<p>13 . Now close the file and run Kibana with <code>bin/kibana</code></p>
+<p>13 . If your Elasticsearch resides on another server, uncomment <code>elasticsearch.url</code> .</p>
 
-<p>14 . Open up <a href="http://localhost:5601">http://localhost:5601</a> and you&rsquo;ll be asked to enter your index name. Use the index name from step 4. For example <code>yourIndex-*</code> .</p>
+<p>14 . Now close the file and run Kibana with <code>bin/kibana</code></p>
 
-<p>15 . Once that is done, go to the <code>Discover</code> tab and change the time frame on the top right corner.</p>
+<p>15 . Open up <a href="http://localhost:5601">http://localhost:5601</a> and you&rsquo;ll be asked to enter your index name. Use the index name from step 4. For example <code>yourIndex-*</code> .</p>
+
+<p>16 . Once that is done, go to the <code>Discover</code> tab and change the time frame on the top right corner.</p>
+
+<p>Your overall architecture should look something like this:</p>
+
+<p><img src="http://pugnusferreus.github.io/images/ELK.jpg" alt="ELK Diagram" /></p>
 ]]></content>
   </entry>
   
