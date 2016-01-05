@@ -4,7 +4,7 @@
   <title><![CDATA[Benson's Programming Journey]]></title>
   <link href="http://pugnusferreus.github.io/atom.xml" rel="self"/>
   <link href="http://pugnusferreus.github.io/"/>
-  <updated>2016-01-05T10:23:26+11:00</updated>
+  <updated>2016-01-06T09:44:17+11:00</updated>
   <id>http://pugnusferreus.github.io/</id>
   <author>
     <name><![CDATA[Benson Lim]]></name>
@@ -20,7 +20,7 @@
     <id>http://pugnusferreus.github.io/blog/2016/01/03/integrating-logstash-with-your-java-application</id>
     <content type="html"><![CDATA[<p>What is Logstash? Logstash is basically a data collection engine (which, in this example we&rsquo;ll use it to collect data from our Java Log4J logs).</p>
 
-<p>We will be using ELK stack (Elasticsearch, Logstash and Kibana) on Mac OS X in this tutorial.</p>
+<p>We will be using Elastic Stack (Elasticsearch, Logstash and Kibana) on Mac OS X in this tutorial.</p>
 
 <p>Before we proceed, we&rsquo;ll need the following:</p>
 
@@ -125,7 +125,7 @@ output {
 
 <p>Your overall architecture should look something like this:</p>
 
-<p><img src="http://pugnusferreus.github.io/images/ELK.jpg" alt="ELK Diagram" /></p>
+<p><img src="http://pugnusferreus.github.io/images/ELK.jpg" alt="Elastic Stack Diagram" /></p>
 ]]></content>
   </entry>
   
